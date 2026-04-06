@@ -1,0 +1,18 @@
+{
+  "appId": "com.pixeltime.app",
+  "appName": "PixelTime",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "plugins": {
+    "App": {
+      "allowUrlOpen": true
+    },
+    "SplashScreen": {
+      "launchShowDuration": 3000,
+      "launchAutoHide": true,
+      "backgroundColor": "#1a1a2e"
+    }
+  }
+}

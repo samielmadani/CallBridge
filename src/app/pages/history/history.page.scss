@@ -1,0 +1,90 @@
+ion-content {
+  --background: linear-gradient(145deg, #08101f 0%, #121f40 45%, #08121f 100%);
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  text-align: center;
+  color: #f3f9ff;
+  padding: 40px 24px;
+}
+
+.empty-icon {
+  font-size: 84px;
+  color: #00d4ff;
+  opacity: 0.24;
+  margin-bottom: 24px;
+}
+
+.empty-state h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  color: #9bb4d9;
+  font-size: 15px;
+  max-width: 360px;
+}
+
+.history-container {
+  padding: 18px 18px 28px;
+}
+
+ion-list {
+  --padding-start: 0;
+  --padding-end: 0;
+  --background: transparent;
+}
+
+.history-item {
+  --inner-padding-end: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.16);
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.history-item:hover,
+.history-item:active {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(0, 212, 255, 0.24);
+}
+
+.history-item ion-label {
+  padding: 14px 0;
+}
+
+.call-title {
+  color: #f8fbff;
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.call-date {
+  color: #8ab3dc;
+  font-size: 12px;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.call-id {
+  color: #9fb7d3;
+  font-size: 11px;
+  display: block;
+}
+
+.history-item ion-icon[slot='end'] {
+  color: #8caacc;
+}

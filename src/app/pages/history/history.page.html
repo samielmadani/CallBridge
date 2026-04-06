@@ -1,0 +1,36 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Call History</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="dark">
+  <div *ngIf="callHistory.length === 0" class="empty-state">
+    <div class="empty-icon">
+      <ion-icon name="time-outline"></ion-icon>
+    </div>
+    <h2>No Call History</h2>
+    <p>Join a FaceTime call to see your history here</p>
+  </div>
+
+  <div *ngIf="callHistory.length > 0" class="history-container">
+    <ion-list color="dark">
+      <ion-item
+        *ngFor="let call of callHistory"
+        class="history-item"
+        color="dark"
+        (click)="openCall(call)"
+      >
+        <ion-label>
+          <div class="call-title">{{ call.userName || 'Anonymous' }}</div>
+          <small class="call-date">{{ formatDate(call.joinedAt) }}</small>
+          <small class="call-id">{{ extractCallId(call.url) }}</small>
+        </ion-label>
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

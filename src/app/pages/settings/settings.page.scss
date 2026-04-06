@@ -1,0 +1,145 @@
+ion-content {
+  --background: linear-gradient(145deg, #08101f 0%, #141f3c 42%, #09131f 100%);
+}
+
+.settings-card,
+.info-card {
+  margin: 18px;
+  border-radius: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(11, 16, 31, 0.92);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 64px rgba(0, 0, 0, 0.18);
+}
+
+.settings-card ion-card-header,
+.info-card ion-card-content {
+  padding: 20px 22px;
+}
+
+.settings-card ion-card-title {
+  color: #f8fbff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.form-group,
+.toggle-group {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.form-group:last-of-type,
+.toggle-group:last-of-type {
+  border-bottom: none;
+}
+
+.form-group ion-label {
+  color: #f8fbff;
+  font-weight: 700;
+}
+
+.form-group ion-input {
+  margin-top: 10px;
+  border-radius: 16px;
+  --background: rgba(255, 255, 255, 0.05);
+}
+
+.info-text {
+  color: #9fb6d6;
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+.toggle-group {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.toggle-label ion-label {
+  color: #f8fbff;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.toggle-label small {
+  color: #9fb6d9;
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+ion-toggle {
+  --background: rgba(255, 255, 255, 0.1);
+  --background-checked: #00d4ff;
+  --handle-background: #ffffff;
+}
+
+ion-button {
+  --border-radius: 14px;
+  margin-top: 12px;
+  font-weight: 700;
+}
+
+ion-button[color='danger'][fill='outline'] {
+  --border-color: rgba(239, 68, 68, 0.7);
+  --color: #ef4444;
+}
+
+.about-content {
+  text-align: center;
+  color: #f8fbff;
+}
+
+.app-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: rgba(0, 212, 255, 0.14);
+}
+
+.app-icon ion-icon {
+  font-size: 32px;
+  color: #00d4ff;
+}
+
+.about-content h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.version {
+  color: #a5b7d4;
+  margin-bottom: 8px;
+}
+
+.tagline {
+  color: #9fb6d9;
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+
+.features-list {
+  display: grid;
+  gap: 10px;
+  text-align: left;
+}
+
+.features-list p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #a9bedf;
+  font-size: 14px;
+}
+
+.features-list ion-icon {
+  color: #00d4ff;
+}

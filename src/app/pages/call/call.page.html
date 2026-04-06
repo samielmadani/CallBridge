@@ -1,0 +1,163 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>FaceTime Call</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="toggleFilterPanel()">
+        <ion-icon name="options"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="dark" (click)="onControlsClick()">
+  <!-- Video Area with Filters -->
+  <div class="video-container" [ngStyle]="{'filter': 'blur(' + filterOptions.blur + 'px) brightness(' + filterOptions.brightness + '%) contrast(' + filterOptions.contrast + '%) saturate(' + filterOptions.saturate + '%) hue-rotate(' + filterOptions.hueRotate + 'deg)'}">
+    <div class="placeholder-video">
+      <div class="video-placeholder">
+        <!-- In a real app, this would be a WebRTC stream -->
+        <ion-icon name="videocam"></ion-icon>
+        <p>Video Stream Active</p>
+        <small>via FaceTime</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call Info Overlay -->
+  <div class="call-info-overlay" *ngIf="isAutoJoined">
+    <div class="auto-joined-badge">
+      <ion-icon name="checkmark-circle"></ion-icon>
+      <span>Auto-joined</span>
+    </div>
+  </div>
+
+  <!-- Controls (show/hide on tap) -->
+  <div class="call-controls" *ngIf="showControls" [@fadeInOut]>
+    <div class="top-controls">
+      <div class="duration">{{ getFormattedTime(callDuration) }}</div>
+      <div class="user-info">{{ userName }}</div>
+    </div>
+
+    <div class="bottom-controls">
+      <ion-button color="medium" fill="solid" class="control-btn">
+        <ion-icon name="mic"></ion-icon>
+      </ion-button>
+      <ion-button color="danger" fill="solid" class="control-btn" (click)="endCall()">
+        <ion-icon name="call"></ion-icon>
+      </ion-button>
+      <ion-button color="medium" fill="solid" class="control-btn">
+        <ion-icon name="camera"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <!-- Filter Panel (Side Panel) -->
+  <ion-modal 
+    [isOpen]="showFilterPanel"
+    [initialBreakpoint]="0.6"
+    [breakpoints]="[0, 0.5, 0.75]"
+  >
+    <ng-template ion-modal-content>
+      <ion-content color="dark">
+        <ion-header collapse="condense" color="dark">
+          <ion-toolbar>
+            <ion-title>Video Effects</ion-title>
+            <ion-buttons slot="end">
+              <ion-button (click)="showFilterPanel = false">
+                <ion-icon name="close"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+          </ion-toolbar>
+        </ion-header>
+
+        <!-- Filter Selection -->
+        <div class="filters-section">
+          <h3>Filters</h3>
+          <div class="filter-grid">
+            <button
+              *ngFor="let filter of filters"
+              class="filter-btn"
+              [class.active]="activeFilter?.name === filter.name"
+              (click)="setFilter(filter)"
+            >
+              <div class="filter-preview" [ngClass]="filter.cssClass"></div>
+              <span>{{ filter.name }}</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Effect Controls -->
+        <div class="effects-section">
+          <h3>Effects</h3>
+          
+          <div class="effect-control">
+            <label>Blur: {{ filterOptions.blur }}px</label>
+            <ion-range
+              min="0"
+              max="20"
+              step="1"
+              [value]="filterOptions.blur"
+              (ionChange)="updateFilter('blur', $event.detail.value)"
+              color="primary"
+            ></ion-range>
+          </div>
+
+          <div class="effect-control">
+            <label>Brightness: {{ filterOptions.brightness }}%</label>
+            <ion-range
+              min="50"
+              max="150"
+              step="1"
+              [value]="filterOptions.brightness"
+              (ionChange)="updateFilter('brightness', $event.detail.value)"
+              color="primary"
+            ></ion-range>
+          </div>
+
+          <div class="effect-control">
+            <label>Contrast: {{ filterOptions.contrast }}%</label>
+            <ion-range
+              min="50"
+              max="150"
+              step="1"
+              [value]="filterOptions.contrast"
+              (ionChange)="updateFilter('contrast', $event.detail.value)"
+              color="primary"
+            ></ion-range>
+          </div>
+
+          <div class="effect-control">
+            <label>Saturation: {{ filterOptions.saturate }}%</label>
+            <ion-range
+              min="0"
+              max="200"
+              step="1"
+              [value]="filterOptions.saturate"
+              (ionChange)="updateFilter('saturate', $event.detail.value)"
+              color="primary"
+            ></ion-range>
+          </div>
+
+          <div class="effect-control">
+            <label>Hue Rotate: {{ filterOptions.hueRotate }}°</label>
+            <ion-range
+              min="0"
+              max="360"
+              step="1"
+              [value]="filterOptions.hueRotate"
+              (ionChange)="updateFilter('hueRotate', $event.detail.value)"
+              color="primary"
+            ></ion-range>
+          </div>
+
+          <ion-button expand="block" color="medium" (click)="resetFilters()">
+            <ion-icon slot="start" name="refresh"></ion-icon>
+            Reset to Default
+          </ion-button>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

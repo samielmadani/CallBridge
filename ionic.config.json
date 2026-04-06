@@ -1,0 +1,7 @@
+{
+  "name": "PixelTime",
+  "type": "angular",
+  "integrations": {
+    "capacitor": {}
+  }
+}

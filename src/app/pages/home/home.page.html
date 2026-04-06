@@ -1,0 +1,110 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-title>PixelTime</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="navigateToSettings()" color="secondary">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="dark">
+  <!-- Header Section -->
+  <div class="hero-section">
+    <div class="hero-icon">
+      <ion-icon name="videocam"></ion-icon>
+    </div>
+    <h1>Ready for FaceTime?</h1>
+    <p>Click a FaceTime link and join instantly</p>
+  </div>
+
+  <!-- Main Card -->
+  <ion-card class="setup-card" color="dark">
+    <ion-card-header>
+      <ion-card-title>Your Profile</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <!-- Username Input -->
+      <div class="form-group">
+        <ion-label position="floating">Your Name</ion-label>
+        <ion-input
+          type="text"
+          placeholder="Enter your name"
+          [(ngModel)]="userName"
+          (blur)="onUserNameChange(userName)"
+          debounce="500"
+          clearInput
+        ></ion-input>
+        <small class="info-text">
+          This name will be sent to FaceTime calls
+        </small>
+      </div>
+
+      <!-- Auto-Join Toggle -->
+      <div class="toggle-group">
+        <div class="toggle-label">
+          <ion-label>Auto-Join Calls</ion-label>
+          <small>Automatically join calls with your name</small>
+        </div>
+        <ion-toggle
+          [checked]="autoJoinEnabled"
+          (ionChange)="toggleAutoJoin()"
+        ></ion-toggle>
+      </div>
+
+      <!-- Status -->
+      <div class="status-section">
+        <div class="status-item">
+          <ion-icon name="person-circle" color="primary"></ion-icon>
+          <div>
+            <small>Current Name</small>
+            <p>{{ userName || 'Not set' }}</p>
+          </div>
+        </div>
+        <div class="status-item">
+          <ion-icon
+            [name]="autoJoinEnabled ? 'checkmark-circle' : 'close-circle'"
+            [color]="autoJoinEnabled ? 'success' : 'medium'"
+          ></ion-icon>
+          <div>
+            <small>Auto-Join Status</small>
+            <p>{{ autoJoinEnabled ? 'Enabled' : 'Disabled' }}</p>
+          </div>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Quick Access -->
+  <ion-card class="quick-access-card" color="dark">
+    <ion-card-header>
+      <ion-card-title>Quick Access</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" fill="solid" color="primary">
+        <ion-icon slot="start" name="call"></ion-icon>
+        New Call
+      </ion-button>
+      <ion-button expand="block" fill="outline" (click)="navigateToHistory()">
+        <ion-icon slot="start" name="time"></ion-icon>
+        Call History
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Info Section -->
+  <div class="info-section">
+    <ion-card color="dark" class="info-card">
+      <ion-card-content>
+        <h3>How it works</h3>
+        <ol>
+          <li>Set your name above</li>
+          <li>Click a FaceTime link from an iPhone user</li>
+          <li>PixelTime opens and auto-joins the call</li>
+          <li>Enjoy video calling with your friends!</li>
+        </ol>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

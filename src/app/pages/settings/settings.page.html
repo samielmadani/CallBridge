@@ -1,0 +1,82 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-back-button (click)="goBack()"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Settings</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" color="dark">
+  <!-- Profile Section -->
+  <ion-card class="settings-card" color="dark">
+    <ion-card-header>
+      <ion-card-title>Profile</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="form-group">
+        <ion-label position="floating">Your Name</ion-label>
+        <ion-input
+          type="text"
+          placeholder="Enter your name"
+          [(ngModel)]="userName"
+          (blur)="onUserNameChange(userName)"
+          clearInput
+        ></ion-input>
+        <small class="info-text">Used when joining FaceTime calls</small>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Preferences Section -->
+  <ion-card class="settings-card" color="dark">
+    <ion-card-header>
+      <ion-card-title>Preferences</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div class="toggle-group">
+        <div class="toggle-label">
+          <ion-label>Auto-Join Calls</ion-label>
+          <small>Automatically join calls when clicking links</small>
+        </div>
+        <ion-toggle
+          [checked]="autoJoinEnabled"
+          (ionChange)="toggleAutoJoin()"
+        ></ion-toggle>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Data Section -->
+  <ion-card class="settings-card" color="dark">
+    <ion-card-header>
+      <ion-card-title>Data & Privacy</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-button expand="block" fill="outline" color="danger" (click)="clearHistory()">
+        <ion-icon slot="start" name="trash"></ion-icon>
+        Clear Call History
+      </ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- About Section -->
+  <ion-card class="settings-card info-card" color="dark">
+    <ion-card-content>
+      <div class="about-content">
+        <div class="app-icon">
+          <ion-icon name="videocam"></ion-icon>
+        </div>
+        <h2>PixelTime</h2>
+        <p class="version">v{{ version }}</p>
+        <small class="tagline">Easy FaceTime for Android Users</small>
+        <div class="features-list">
+          <p><ion-icon name="checkmark-circle"></ion-icon> Auto-join FaceTime calls</p>
+          <p><ion-icon name="checkmark-circle"></ion-icon> Video filters & effects</p>
+          <p><ion-icon name="checkmark-circle"></ion-icon> Call history</p>
+          <p><ion-icon name="checkmark-circle"></ion-icon> Deep linking support</p>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
