@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { FaceTimeService } from '../../services/facetime.service';
 import { AlertController } from '@ionic/angular';
+import {
+  EffectOptions,
+  VideoEffectsService,
+  VideoFilter,
+} from '../../services/video-effects.service';
 
 @Component({
   selector: 'app-settings',
@@ -11,11 +15,19 @@ import { AlertController } from '@ionic/angular';
 export class SettingsPage implements OnInit {
   userName: string = '';
   autoJoinEnabled: boolean = true;
-  version: string = '1.0.0';
+  filters: VideoFilter[] = [];
+  activeFilter: VideoFilter | null = null;
+  filterOptions: EffectOptions = {
+    blur: 0,
+    brightness: 100,
+    contrast: 100,
+    saturate: 100,
+    hueRotate: 0,
+  };
 
   constructor(
     private faceTimeService: FaceTimeService,
-    private router: Router,
+    private videoEffectsService: VideoEffectsService,
     private alertController: AlertController
   ) {}
 
@@ -27,6 +39,14 @@ export class SettingsPage implements OnInit {
     this.faceTimeService.autoJoinEnabled$.subscribe((enabled) => {
       this.autoJoinEnabled = enabled;
     });
+    this.filters = this.videoEffectsService.getAvailableFilters();
+    this.videoEffectsService.activeFilter$.subscribe((filter) => {
+      this.activeFilter = filter;
+      this.filters = this.videoEffectsService.getAvailableFilters();
+    });
+    this.videoEffectsService.effectOptions$.subscribe((options) => {
+      this.filterOptions = options;
+    });
   }
 
   onUserNameChange(name: string) {
@@ -36,6 +56,29 @@ export class SettingsPage implements OnInit {
   toggleAutoJoin(enabled: boolean) {
     this.autoJoinEnabled = enabled;
     this.faceTimeService.setAutoJoin(enabled);
+  }
+
+  selectFilter(value: string | number) {
+    const name = String(value);
+    const filter = this.videoEffectsService
+      .getAvailableFilters()
+      .find((item) => item.name === name);
+    if (filter) this.videoEffectsService.setActiveFilter(filter);
+  }
+
+  updateEffect(
+    key: keyof EffectOptions,
+    value: number | { lower: number; upper: number }
+  ) {
+    this.videoEffectsService.updateEffect(
+      key,
+      typeof value === 'number' ? value : value.lower
+    );
+  }
+
+  resetEffects() {
+    this.videoEffectsService.resetEffects();
+    this.selectFilter('Normal');
   }
 
   async clearHistory() {
@@ -59,7 +102,4 @@ export class SettingsPage implements OnInit {
     await alert.present();
   }
 
-  goBack() {
-    this.router.navigate(['/home']);
-  }
 }

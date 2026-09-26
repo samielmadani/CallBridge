@@ -1,15 +1,15 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
+<ion-header>
+  <ion-toolbar>
     <ion-title>History</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" color="dark">
+<ion-content>
   <div *ngIf="callHistory.length === 0" class="empty-state">
     <div class="empty-icon">
       <ion-icon name="time-outline"></ion-icon>
     </div>
-    <h2>No Call History</h2>
+    <h1>No calls yet</h1>
     <p>Your recent calls will appear here.</p>
   </div>
 

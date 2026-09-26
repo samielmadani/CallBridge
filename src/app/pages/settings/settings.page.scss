@@ -1,145 +1,116 @@
 ion-content {
-  --background: linear-gradient(145deg, #08101f 0%, #141f3c 42%, #09131f 100%);
+  --background: var(--cb-ink);
 }
 
-.settings-card,
-.info-card {
-  margin: 18px;
-  border-radius: 22px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(11, 16, 31, 0.92);
-  backdrop-filter: blur(18px);
-  box-shadow: 0 18px 64px rgba(0, 0, 0, 0.18);
+.settings-page {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 8px 22px 40px;
 }
 
-.settings-card ion-card-header,
-.info-card ion-card-content {
-  padding: 20px 22px;
+.settings-section {
+  padding: 22px 0;
+  border-bottom: 1px solid var(--cb-line);
 }
 
-.settings-card ion-card-title {
-  color: #f8fbff;
-  font-size: 18px;
+.settings-section h2 {
+  margin: 0 0 12px;
+  color: var(--cb-text);
+  font-size: 16px;
   font-weight: 700;
 }
 
-.form-group,
-.toggle-group {
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.form-group:last-of-type,
-.toggle-group:last-of-type {
-  border-bottom: none;
-}
-
-.form-group ion-label {
-  color: #f8fbff;
-  font-weight: 700;
-}
-
-.form-group ion-input {
-  margin-top: 10px;
-  border-radius: 16px;
-  --background: rgba(255, 255, 255, 0.05);
-}
-
-.info-text {
-  color: #9fb6d6;
+.settings-section p {
+  margin: 5px 0 0;
+  color: var(--cb-muted);
   font-size: 13px;
-  margin-top: 10px;
+  line-height: 1.45;
 }
 
-.toggle-group {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 16px;
+.settings-section ion-input {
+  --background: var(--cb-surface);
+  --border-color: var(--cb-line);
+  --border-radius: 6px;
+  --color: var(--cb-text);
+  --highlight-color-focused: var(--cb-cyan);
+  margin-top: 12px;
+}
+
+.preference-row {
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 20px;
 }
 
-.toggle-label ion-label {
-  color: #f8fbff;
-  font-size: 15px;
-  font-weight: 700;
+.preference-row h2 {
+  margin-bottom: 0;
 }
 
-.toggle-label small {
-  color: #9fb6d9;
-  display: block;
-  margin-top: 6px;
+.preference-row ion-toggle {
+  flex: 0 0 auto;
+  --background-checked: var(--cb-cyan);
+  --handle-background-checked: var(--cb-ink);
+}
+
+.effects-section ion-segment {
+  margin: 18px 0 20px;
+  --background: var(--cb-surface);
+}
+
+.effects-section ion-segment-button {
+  min-width: 72px;
+  --border-radius: 5px;
+  --color-checked: var(--cb-ink);
+  --indicator-color: var(--cb-cyan);
   font-size: 12px;
 }
 
-ion-toggle {
-  --background: rgba(255, 255, 255, 0.1);
-  --background-checked: #00d4ff;
-  --handle-background: #ffffff;
+.effect-control {
+  padding: 12px 0 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
 }
 
-ion-button {
-  --border-radius: 14px;
-  margin-top: 12px;
-  font-weight: 700;
-}
-
-ion-button[color='danger'][fill='outline'] {
-  --border-color: rgba(239, 68, 68, 0.7);
-  --color: #ef4444;
-}
-
-.about-content {
-  text-align: center;
-  color: #f8fbff;
-}
-
-.app-icon {
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 16px;
-  display: grid;
-  place-items: center;
-  border-radius: 22px;
-  background: rgba(0, 212, 255, 0.14);
-}
-
-.app-icon ion-icon {
-  font-size: 32px;
-  color: #00d4ff;
-}
-
-.about-content h2 {
-  font-size: 26px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.version {
-  color: #a5b7d4;
-  margin-bottom: 8px;
-}
-
-.tagline {
-  color: #9fb6d9;
-  font-size: 13px;
-  margin-bottom: 20px;
-}
-
-.features-list {
-  display: grid;
-  gap: 10px;
-  text-align: left;
-}
-
-.features-list p {
+.effect-control label {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #a9bedf;
-  font-size: 14px;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--cb-text);
+  font-size: 13px;
+  font-weight: 600;
 }
 
-.features-list ion-icon {
-  color: #00d4ff;
+.effect-control label span {
+  color: var(--cb-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.effect-control ion-range {
+  --bar-background: #28414a;
+  --bar-background-active: var(--cb-cyan);
+  --knob-background: var(--cb-text);
+  --pin-background: var(--cb-cyan);
+  --pin-color: var(--cb-ink);
+  padding-inline: 0;
+}
+
+.reset-effects {
+  --color: var(--cb-cyan);
+  margin-top: 12px;
+}
+
+.data-section {
+  border-bottom: 0;
+}
+
+.data-section ion-button {
+  --border-radius: 6px;
+  --border-color: rgba(244, 108, 99, 0.65);
+  margin-top: 4px;
+}
+
+@media (max-width: 380px) {
+  .settings-page {
+    padding-inline: 16px;
+  }
 }

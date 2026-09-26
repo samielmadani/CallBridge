@@ -1,83 +1,80 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-buttons slot="start">
-      <ion-back-button (click)="goBack()"></ion-back-button>
-    </ion-buttons>
+<ion-header>
+  <ion-toolbar>
     <ion-title>Settings</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" color="dark">
-  <!-- Profile Section -->
-  <ion-card class="settings-card" color="dark">
-    <ion-card-header>
-      <ion-card-title>Profile</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="form-group">
-        <ion-label position="floating">Your Name</ion-label>
-        <ion-input
-          type="text"
-          placeholder="Enter your name"
-          [(ngModel)]="userName"
-          debounce="300"
-          (ionInput)="onUserNameChange($event.detail.value || '')"
-          clearInput
-        ></ion-input>
-        <small class="info-text">Used when joining FaceTime calls</small>
-      </div>
-    </ion-card-content>
-  </ion-card>
+<ion-content>
+  <main class="settings-page">
+    <section class="settings-section">
+      <h2>Caller profile</h2>
+      <ion-input
+        label="Your name"
+        label-placement="stacked"
+        type="text"
+        placeholder="Enter your name"
+        [(ngModel)]="userName"
+        debounce="300"
+        (ionInput)="onUserNameChange($event.detail.value || '')"
+        clearInput
+      ></ion-input>
+      <p class="settings-note">Used when CallBridge joins a FaceTime link.</p>
+    </section>
 
-  <!-- Preferences Section -->
-  <ion-card class="settings-card" color="dark">
-    <ion-card-header>
-      <ion-card-title>Preferences</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <div class="toggle-group">
-        <div class="toggle-label">
-          <ion-label>Auto-Join Calls</ion-label>
-          <small>Automatically join calls when clicking links</small>
-        </div>
-        <ion-toggle
-          [checked]="autoJoinEnabled"
-          (ionChange)="toggleAutoJoin($event.detail.checked)"
-        ></ion-toggle>
+    <section class="settings-section preference-row">
+      <div>
+        <h2>Auto-join</h2>
+        <p>Enter your saved name automatically when a link opens.</p>
       </div>
-    </ion-card-content>
-  </ion-card>
+      <ion-toggle
+        [checked]="autoJoinEnabled"
+        (ionChange)="toggleAutoJoin($event.detail.checked)"
+        aria-label="Auto-join calls"
+      ></ion-toggle>
+    </section>
 
-  <!-- Data Section -->
-  <ion-card class="settings-card" color="dark">
-    <ion-card-header>
-      <ion-card-title>Data & Privacy</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-button expand="block" fill="outline" color="danger" (click)="clearHistory()">
-        <ion-icon slot="start" name="trash"></ion-icon>
-        Clear Call History
+    <section class="settings-section effects-section">
+      <h2>Call view</h2>
+      <p class="settings-note">These effects change only your local view.</p>
+      <ion-segment
+        [value]="activeFilter?.name || 'Normal'"
+        (ionChange)="selectFilter($event.detail.value || 'Normal')"
+        scrollable="true"
+        aria-label="Call view filter"
+      >
+        <ion-segment-button *ngFor="let filter of filters" [value]="filter.name">
+          <ion-label>{{ filter.name }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      <div class="effect-control">
+        <label for="blur-range">Blur <span>{{ filterOptions.blur }} px</span></label>
+        <ion-range id="blur-range" min="0" max="20" [value]="filterOptions.blur" (ionChange)="updateEffect('blur', $event.detail.value)"></ion-range>
+      </div>
+      <div class="effect-control">
+        <label for="brightness-range">Brightness <span>{{ filterOptions.brightness }}%</span></label>
+        <ion-range id="brightness-range" min="50" max="150" [value]="filterOptions.brightness" (ionChange)="updateEffect('brightness', $event.detail.value)"></ion-range>
+      </div>
+      <div class="effect-control">
+        <label for="contrast-range">Contrast <span>{{ filterOptions.contrast }}%</span></label>
+        <ion-range id="contrast-range" min="50" max="150" [value]="filterOptions.contrast" (ionChange)="updateEffect('contrast', $event.detail.value)"></ion-range>
+      </div>
+      <div class="effect-control">
+        <label for="saturation-range">Saturation <span>{{ filterOptions.saturate }}%</span></label>
+        <ion-range id="saturation-range" min="0" max="200" [value]="filterOptions.saturate" (ionChange)="updateEffect('saturate', $event.detail.value)"></ion-range>
+      </div>
+      <ion-button fill="clear" class="reset-effects" (click)="resetEffects()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+        Reset effects
       </ion-button>
-    </ion-card-content>
-  </ion-card>
+    </section>
 
-  <!-- About Section -->
-  <ion-card class="settings-card info-card" color="dark">
-    <ion-card-content>
-      <div class="about-content">
-        <div class="app-icon">
-          <ion-icon name="videocam"></ion-icon>
-        </div>
-        <h2>CallBridge</h2>
-        <p class="version">v{{ version }}</p>
-        <small class="tagline">Join FaceTime links on Android</small>
-        <div class="features-list">
-          <p><ion-icon name="checkmark-circle"></ion-icon> Auto-join FaceTime calls</p>
-          <p><ion-icon name="checkmark-circle"></ion-icon> Video filters & effects</p>
-          <p><ion-icon name="checkmark-circle"></ion-icon> Call history</p>
-          <p><ion-icon name="checkmark-circle"></ion-icon> Deep linking support</p>
-        </div>
-      </div>
-    </ion-card-content>
-  </ion-card>
+    <section class="settings-section data-section">
+      <h2>Call history</h2>
+      <ion-button fill="outline" color="danger" (click)="clearHistory()">
+        <ion-icon slot="start" name="trash-outline"></ion-icon>
+        Clear history
+      </ion-button>
+    </section>
+  </main>
 </ion-content>

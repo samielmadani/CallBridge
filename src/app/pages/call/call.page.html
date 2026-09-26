@@ -29,6 +29,7 @@
         *ngIf="callFrame"
         class="call-frame"
         [src]="callFrame"
+        [style.filter]="getCallFilterStyle()"
         title="FaceTime call"
         allow="camera; microphone; autoplay; fullscreen"
         allowfullscreen

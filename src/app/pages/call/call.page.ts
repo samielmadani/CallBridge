@@ -5,6 +5,10 @@ import { Style, StatusBar } from '@capacitor/status-bar';
 import { ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import { FaceTimeCallData, FaceTimeService } from '../../services/facetime.service';
+import {
+  EffectOptions,
+  VideoEffectsService,
+} from '../../services/video-effects.service';
 
 interface EmbeddedBrowser {
   addEventListener(name: string, callback: (event: any) => void): void;
@@ -40,6 +44,13 @@ export class CallPage implements OnInit, OnDestroy {
   callDuration = 0;
   userName = '';
   autoJoinEnabled = true;
+  filterOptions: EffectOptions = {
+    blur: 0,
+    brightness: 100,
+    contrast: 100,
+    saturate: 100,
+    hueRotate: 0,
+  };
   isEmbeddedCallOpen = false;
   callFrame: SafeResourceUrl | null = null;
   private activeCallUrl = '';
@@ -50,6 +61,7 @@ export class CallPage implements OnInit, OnDestroy {
 
   constructor(
     private faceTimeService: FaceTimeService,
+    private videoEffectsService: VideoEffectsService,
     private sanitizer: DomSanitizer,
     private toastController: ToastController
   ) {}
@@ -63,6 +75,12 @@ export class CallPage implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.faceTimeService.autoJoinEnabled$.subscribe((enabled) => {
         this.autoJoinEnabled = enabled;
+      })
+    );
+    this.subscriptions.add(
+      this.videoEffectsService.effectOptions$.subscribe((options) => {
+        this.filterOptions = options;
+        this.applyCallEffects();
       })
     );
     this.subscriptions.add(
@@ -133,7 +151,10 @@ export class CallPage implements OnInit, OnDestroy {
     );
     this.isEmbeddedCallOpen = true;
     this.browserRef.addEventListener('loadstop', (event) => {
-      if (event.url?.includes('facetime.apple.com')) this.attemptAutoJoin();
+      if (event.url?.includes('facetime.apple.com')) {
+        this.attemptAutoJoin();
+        this.applyCallEffects();
+      }
     });
     this.browserRef.addEventListener('loaderror', (event) => {
       void this.showToast(event.message || 'FaceTime could not be loaded.');
@@ -188,6 +209,19 @@ export class CallPage implements OnInit, OnDestroy {
 
     this.autoJoinStarted = true;
     this.browserRef.executeScript({ code: script });
+  }
+
+  private applyCallEffects() {
+    if (!this.browserRef) return;
+    const filter = this.getCallFilterStyle();
+    this.browserRef.executeScript({
+      code: `document.querySelectorAll('video').forEach(function(video) { video.style.filter = ${JSON.stringify(filter)}; });`,
+    });
+  }
+
+  getCallFilterStyle(): string {
+    const effects = this.filterOptions;
+    return `blur(${effects.blur}px) brightness(${effects.brightness}%) contrast(${effects.contrast}%) saturate(${effects.saturate}%) hue-rotate(${effects.hueRotate}deg)`;
   }
 
   private async requestMediaPermissions(): Promise<boolean> {
