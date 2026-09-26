@@ -59,12 +59,12 @@ export class FaceTimeService {
 
   setUserName(name: string) {
     this.userName.next(name);
-    localStorage.setItem('pixeltime_username', name);
+    localStorage.setItem('callbridge_username', name);
   }
 
   setAutoJoin(enabled: boolean) {
     this.autoJoinEnabled.next(enabled);
-    localStorage.setItem('pixeltime_autojoin', String(enabled));
+    localStorage.setItem('callbridge_autojoin', String(enabled));
   }
 
   private addToHistory(callData: FaceTimeCallData) {
@@ -74,21 +74,21 @@ export class FaceTimeService {
       history.pop();
     }
     this.callHistory.next([...history]);
-    localStorage.setItem('pixeltime_history', JSON.stringify(history));
+    localStorage.setItem('callbridge_history', JSON.stringify(history));
   }
 
   private loadUserSettings() {
-    const savedName = localStorage.getItem('pixeltime_username');
+    const savedName = localStorage.getItem('callbridge_username');
     if (savedName) {
       this.userName.next(savedName);
     }
 
-    const autoJoin = localStorage.getItem('pixeltime_autojoin');
+    const autoJoin = localStorage.getItem('callbridge_autojoin');
     if (autoJoin !== null) {
       this.autoJoinEnabled.next(autoJoin === 'true');
     }
 
-    const history = localStorage.getItem('pixeltime_history');
+    const history = localStorage.getItem('callbridge_history');
     if (history) {
       try {
         this.callHistory.next(JSON.parse(history));
@@ -108,7 +108,7 @@ export class FaceTimeService {
 
   clearHistory() {
     this.callHistory.next([]);
-    localStorage.removeItem('pixeltime_history');
+    localStorage.removeItem('callbridge_history');
   }
 
   endCall() {

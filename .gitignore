@@ -47,7 +47,10 @@ yarn-error.log
 Thumbs.db
 
 # Capacitor files
-/android/
+/android/.gradle/
+/android/local.properties
+/android/app/build/
+/android/capacitor-cordova-android-plugins/build/
 /ios/
 
 # Environment

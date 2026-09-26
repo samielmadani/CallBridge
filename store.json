@@ -1,0 +1,5 @@
+{
+  "name": "CallBridge",
+  "description": "Opens FaceTime links on Android and streamlines joining calls with saved profile and auto-join preferences.",
+  "packageName": "com.samielmadani.callbridge"
+}

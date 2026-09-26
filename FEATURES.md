@@ -1,4 +1,4 @@
-# PixelTime - Feature Ideas & Roadmap
+# CallBridge - Feature Ideas & Roadmap
 
 ## Completed Features ✅
 1. **Deep Linking** - Handles FaceTime URLs directly
@@ -216,11 +216,11 @@ case 'YourFilter':
 1. **Extend FaceTimeService:**
 ```typescript
 setNewPreference(value: any) {
-  localStorage.setItem('pixeltime_preference', JSON.stringify(value));
+  localStorage.setItem('callbridge_preference', JSON.stringify(value));
 }
 
 getNewPreference() {
-  return localStorage.getItem('pixeltime_preference');
+  return localStorage.getItem('callbridge_preference');
 }
 ```
 

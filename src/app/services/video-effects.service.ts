@@ -60,7 +60,7 @@ export class VideoEffectsService {
     this.activeFilter.next(filter);
 
     this.applyFilterEffects(filter.name);
-    localStorage.setItem('pixeltime_filter', filter.name);
+    localStorage.setItem('callbridge_filter', filter.name);
   }
 
   private applyFilterEffects(filterName: string) {
@@ -103,7 +103,7 @@ export class VideoEffectsService {
     const currentEffects = this.effectOptions.value;
     currentEffects[key] = value;
     this.effectOptions.next({ ...currentEffects });
-    localStorage.setItem('pixeltime_effects', JSON.stringify(currentEffects));
+    localStorage.setItem('callbridge_effects', JSON.stringify(currentEffects));
   }
 
   resetEffects() {
@@ -114,11 +114,11 @@ export class VideoEffectsService {
       saturate: 100,
       hueRotate: 0,
     });
-    localStorage.removeItem('pixeltime_effects');
+    localStorage.removeItem('callbridge_effects');
   }
 
   private loadSavedSettings() {
-    const savedFilter = localStorage.getItem('pixeltime_filter');
+    const savedFilter = localStorage.getItem('callbridge_filter');
     if (savedFilter) {
       const filter = this.availableFilters.find((f) => f.name === savedFilter);
       if (filter) {
@@ -126,7 +126,7 @@ export class VideoEffectsService {
       }
     }
 
-    const savedEffects = localStorage.getItem('pixeltime_effects');
+    const savedEffects = localStorage.getItem('callbridge_effects');
     if (savedEffects) {
       try {
         this.effectOptions.next(JSON.parse(savedEffects));

@@ -1,6 +1,6 @@
 {
-  "appId": "com.pixeltime.app",
-  "appName": "PixelTime",
+  "appId": "com.samielmadani.callbridge",
+  "appName": "CallBridge",
   "webDir": "www",
   "server": {
     "androidScheme": "https"

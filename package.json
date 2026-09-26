@@ -1,8 +1,8 @@
 {
-  "name": "@pixeltime/ionic-app",
+  "name": "callbridge",
   "version": "1.0.0",
   "license": "MIT",
-  "homepage": "https://pixeltime.app",
+  "homepage": "https://github.com/samielmadani/CallBridge",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --port 8100",
@@ -15,7 +15,7 @@
     "ionic:serve": "ng serve --host 0.0.0.0 --port 8100",
     "cap:add": "cap add android",
     "cap:sync": "cap sync android",
-    "cap:build": "ionic build --prod && cap copy android",
+    "cap:build": "npm run build && cap sync android",
     "cap:open": "cap open android",
     "cap:run": "cap run android"
   },
@@ -29,6 +29,7 @@
     "@angular/platform-browser": "^16.2.0",
     "@angular/platform-browser-dynamic": "^16.2.0",
     "@angular/router": "^16.2.0",
+    "@capacitor/android": "^5.0.6",
     "@capacitor/app": "^5.0.6",
     "@capacitor/browser": "^5.0.6",
     "@capacitor/camera": "^5.0.6",
@@ -65,5 +66,5 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.1.6"
   },
-  "description": "PixelTime - Easy FaceTime Joining for Android Users"
+  "description": "CallBridge opens FaceTime links and helps Android users join calls."
 }

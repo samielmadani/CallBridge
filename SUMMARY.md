@@ -1,4 +1,4 @@
-# PixelTime - Project Summary
+# CallBridge - Project Summary
 
 ## What You've Built 🎉
 
@@ -19,7 +19,7 @@ A complete **Ionic/Capacitor Android app** that makes FaceTime calling easy for 
 ## Project Structure
 
 ```
-PixelTime/
+CallBridge/
 ├── 📱 src/
 │   ├── app/
 │   │   ├── services/
@@ -46,7 +46,7 @@ PixelTime/
 │   ├── FEATURES.md                       # Roadmap & feature ideas
 │   └── PLUGINS.md                        # Custom plugin guide
 └── 🤖 android/                           # Capacitor Android project
-    └── (Generated after npm run cap:add)
+  └── (Committed native project with debug signing configured)
 ```
 
 ---
@@ -75,8 +75,11 @@ npm install
 npm run ionic:serve
 # Opens: http://localhost:8100
 
-# 3. Build for Android
-npm run cap:build
+# 3. Build a debug APK
+npm run build
+npm run cap:sync
+cd android
+./gradlew :app:assembleDebug
 
 # 4. Open in Android Studio
 npm run cap:open
@@ -96,7 +99,7 @@ iPhone User → Creates FaceTime link → Shares via text/email
 
 ### 2️⃣ Android User Clicks Link
 ```
-FaceTime Link → System detects → Opens PixelTime app
+FaceTime Link → System detects → Opens CallBridge app
 ```
 
 ### 3️⃣ Deep Linking Handler Activates
@@ -423,7 +426,7 @@ You now have a **production-ready Ionic app** that:
 
 ---
 
-**🎉 Congratulations! You have PixelTime! 🎉**
+**🎉 Congratulations! You have CallBridge! 🎉**
 
 *Built with ❤️ for Android users who deserve easy FaceTime calling*
 

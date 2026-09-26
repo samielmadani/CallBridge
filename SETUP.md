@@ -1,10 +1,10 @@
-# PixelTime Setup Guide
+# CallBridge Setup Guide
 
 ## Quick Start (5 minutes)
 
 ### 1. Install Dependencies
 ```bash
-cd PixelTime
+cd CallBridge
 npm install
 ```
 
@@ -25,17 +25,17 @@ npm run cap:open
 ## Full Setup Instructions
 
 ### Prerequisites
-- **Node.js**: v16+ ([Download](https://nodejs.org))
+- **Node.js**: v20+ ([Download](https://nodejs.org))
 - **npm**: v8+ (comes with Node.js)
-- **Java Development Kit (JDK)**: 11+ ([Download](https://www.oracle.com/java/technologies/downloads/))
+- **Java Development Kit (JDK)**: 17+ ([Download](https://www.oracle.com/java/technologies/downloads/))
 - **Android Studio**: Latest version ([Download](https://developer.android.com/studio))
 - **Ionic CLI**: `npm install -g @ionic/cli`
 - **Capacitor CLI**: `npm install -g @capacitor/cli`
 
 ### Step 1: Clone Repository
 ```bash
-git clone https://github.com/yourusername/pixeltime.git
-cd PixelTime
+git clone <repository-url>
+cd CallBridge
 ```
 
 ### Step 2: Install Node Modules
@@ -43,15 +43,15 @@ cd PixelTime
 npm install
 ```
 
-### Step 3: Initialize Capacitor
+### Step 3: Sync Capacitor
 ```bash
-npm run cap:add
+npm run cap:sync
 ```
-This creates the `android/` directory.
+The Android project is committed in `android/`; `cap:add` is only needed if recreating the native platform.
 
-### Step 4: Configure Deep Linking (Critical!)
+### Step 4: Verify Deep Linking
 
-Open `android/app/src/main/AndroidManifest.xml` and add FaceTime link handler:
+The committed `android/app/src/main/AndroidManifest.xml` already registers FaceTime links. Its activity filter is:
 
 ```xml
 <activity
@@ -103,9 +103,13 @@ npm run ionic:serve
 
 #### Android Device/Emulator
 ```bash
-npm run cap:build
-npm run cap:open
+npm run build
+npm run cap:sync
+cd android
+./gradlew :app:assembleDebug
 ```
+On Windows, use `gradlew.bat :app:assembleDebug`. The installable debug APK is created at `app/build/outputs/apk/debug/app-debug.apk`.
+Run `npm run cap:open` from the repository root to open Android Studio.
 
 In Android Studio:
 1. Click the "Run" button (green play icon)
@@ -122,14 +126,13 @@ In Android Studio:
 2. **Save files** (auto-reload in browser)
 3. **For Android changes:**
    ```bash
-   npm run cap:build  # Build web app + copy to Android
-   npm run cap:sync   # Or just sync files
+    npm run cap:build  # Build web app and sync native project
    ```
 4. **Refresh in Android Studio** and run again
 
 ### Project Structure
 ```
-PixelTime/
+CallBridge/
 ├── src/
 │   ├── app/
 │   │   ├── services/          # Business logic
@@ -173,7 +176,7 @@ npm run cap:open
   ```bash
   adb shell am start -W -a android.intent.action.VIEW \
     -d "https://facetime.apple.com/join/xyz123" \
-    com.pixeltime.app
+    com.samielmadani.callbridge
   ```
 
 ### Debugging Android
@@ -188,22 +191,17 @@ In Android Studio:
 
 ## Build & Release
 
-### Production Build
+### Debug APK
 ```bash
 npm run build
-npm run cap:build
+npx cap sync android
+cd android
+./gradlew :app:assembleDebug
 ```
-
-### Generate APK
-In Android Studio:
-1. Menu: **Build → Build Bundles / APK**
-2. Select **APK** or **Android App Bundle**
-3. Follow the wizard
-4. Sign with your keystore
-5. Find output in `android/app/build/outputs/`
+The workflow publishes a debug-signed APK to GitHub Releases on pushes to `main`. It uses this repository's dedicated `android/app/debug.keystore`; it does not create release-signed builds.
 
 ### Release Checklist
-- [ ] Update version in `package.json`
+- [ ] Review the Android base version in `android/app/build.gradle`
 - [ ] Update `README.md` changelog
 - [ ] Test all features on real device
 - [ ] Run Lighthouse CI
@@ -220,13 +218,13 @@ In Android Studio:
 ```bash
 npm run cap:build
 adb shell am start -W -a android.intent.action.MAIN \
-  -n com.pixeltime.app/.MainActivity
+  -n com.samielmadani.callbridge/.MainActivity
 ```
 
 ### Issue: Android Studio Can't Find Project
 **Solution:**
 1. File → Open
-2. Navigate to `PixelTime/android`
+2. Navigate to `CallBridge/android`
 3. Click OK
 
 ### Issue: Build Fails with Gradle Error
@@ -258,7 +256,7 @@ npm run cap:sync
 Create `.env` file in root:
 ```env
 # API Configuration
-API_URL=https://api.pixeltime.app
+API_URL=https://api.example.com
 DEBUG=false
 
 # Feature Flags
@@ -296,7 +294,7 @@ import { environment } from '@env/environment';
 ## Support
 
 Need help? Check:
-1. [GitHub Issues](https://github.com/yourusername/pixeltime/issues)
+1. [GitHub Issues](https://github.com/samielmadani/CallBridge/issues)
 2. [Ionic Forum](https://forum.ionicframework.com)
 3. [Stack Overflow](https://stackoverflow.com/questions/tagged/ionic)
 

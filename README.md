@@ -1,4 +1,4 @@
-# PixelTime - FaceTime for Android
+# CallBridge - Join FaceTime calls on Android
 
 A modern Ionic/Capacitor app that makes it easy for Android users to join FaceTime calls with automated link handling.
 
@@ -26,7 +26,7 @@ A modern Ionic/Capacitor app that makes it easy for Android users to join FaceTi
 1. **Clone the repository:**
    ```bash
    git clone <repository-url>
-   cd PixelTime
+   cd CallBridge
    ```
 
 2. **Install dependencies:**
@@ -34,10 +34,11 @@ A modern Ionic/Capacitor app that makes it easy for Android users to join FaceTi
    npm install
    ```
 
-3. **Add Capacitor platforms:**
+3. **Sync the Android project:**
    ```bash
-   npm run cap:add
+   npm run cap:sync
    ```
+   The Capacitor Android project is included in this repository.
 
 ## Development
 
@@ -53,8 +54,12 @@ npm run build
 
 ### Prepare for Android
 ```bash
-npm run cap:build
+npm run build
+npm run cap:sync
+cd android
+./gradlew :app:assembleDebug
 ```
+On Windows, run `gradlew.bat :app:assembleDebug` from `android/`. The APK is written to `android/app/build/outputs/apk/debug/app-debug.apk`.
 
 ### Open Android Studio
 ```bash
@@ -64,7 +69,7 @@ npm run cap:open
 ## Project Structure
 
 ```
-PixelTime/
+CallBridge/
 ├── src/
 │   ├── app/
 │   │   ├── services/
@@ -88,9 +93,9 @@ PixelTime/
 └── README.md
 ```
 
-## Deep Linking Setup (Android)
+## Android Deep Links
 
-Add to `android/app/src/main/AndroidManifest.xml`:
+The committed Android manifest registers both FaceTime URL schemes:
 
 ```xml
 <activity>
@@ -98,7 +103,8 @@ Add to `android/app/src/main/AndroidManifest.xml`:
     <action android:name="android.intent.action.VIEW" />
     <category android:name="android.intent.category.DEFAULT" />
     <category android:name="android.intent.category.BROWSABLE" />
-    <data android:scheme="facetime" android:host="*" />
+   <data android:scheme="facetime" />
+   <data android:scheme="https" android:host="facetime.apple.com" />
   </intent-filter>
 </activity>
 ```
@@ -200,8 +206,8 @@ MIT License - See LICENSE file for details
 ## Support
 
 For issues and questions:
-- GitHub Issues: [Create an issue](https://github.com/yourusername/pixeltime/issues)
-- Email: support@pixeltime.app
+- GitHub Issues: [Create an issue](https://github.com/samielmadani/CallBridge/issues)
+- Email: support@example.com
 
 ## Changelog
 

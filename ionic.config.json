@@ -1,5 +1,5 @@
 {
-  "name": "PixelTime",
+  "name": "CallBridge",
   "type": "angular",
   "integrations": {
     "capacitor": {}

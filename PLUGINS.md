@@ -1,7 +1,7 @@
-# Custom Capacitor Plugins for PixelTime
+# Custom Capacitor Plugins for CallBridge
 
 ## Overview
-While PixelTime primarily uses existing Capacitor plugins, here's how to extend it with custom functionality.
+While CallBridge primarily uses existing Capacitor plugins, here's how to extend it with custom functionality.
 
 ---
 
@@ -218,10 +218,10 @@ MyPlugin/
 
 ### Step 2: Implement Android Layer
 
-**File: `android/src/main/java/com/pixeltime/plugin/MyPlugin.kt`**
+**File: `android/src/main/java/com/callbridge/plugin/MyPlugin.kt`**
 
 ```kotlin
-package com.pixeltime.plugin
+package com.samielmadani.callbridge.plugin
 
 import android.content.Context
 import com.getcapacitor.JSObject
@@ -335,7 +335,7 @@ describe('MyPlugin Integration', () => {
 
 ```json
 {
-  "name": "@pixeltime/facetime-deeplink",
+  "name": "@callbridge/facetime-deeplink",
   "version": "1.0.0",
   "description": "Custom Capacitor plugin for FaceTime deep linking",
   "main": "dist/index.js",
@@ -355,7 +355,7 @@ describe('MyPlugin Integration', () => {
 ### Install in Main App
 
 ```bash
-npm install @pixeltime/facetime-deeplink
+npm install @callbridge/facetime-deeplink
 npx cap sync
 ```
 
