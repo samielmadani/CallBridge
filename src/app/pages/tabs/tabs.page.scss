@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+ion-tabs {
+  height: 100%;
+  touch-action: pan-y;
+}
+
+ion-tab-bar {
+  padding-bottom: env(safe-area-inset-bottom);
+}

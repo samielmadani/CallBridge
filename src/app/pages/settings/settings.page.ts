@@ -33,8 +33,9 @@ export class SettingsPage implements OnInit {
     this.faceTimeService.setUserName(name);
   }
 
-  toggleAutoJoin() {
-    this.faceTimeService.setAutoJoin(this.autoJoinEnabled);
+  toggleAutoJoin(enabled: boolean) {
+    this.autoJoinEnabled = enabled;
+    this.faceTimeService.setAutoJoin(enabled);
   }
 
   async clearHistory() {

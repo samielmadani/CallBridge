@@ -4,32 +4,33 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'tabs/call',
     pathMatch: 'full',
   },
   {
     path: 'home',
-    loadChildren: () =>
-      import('./pages/home/home.module').then((m) => m.HomePageModule),
+    redirectTo: 'tabs/call',
+    pathMatch: 'full',
   },
   {
     path: 'call',
-    loadChildren: () =>
-      import('./pages/call/call.module').then((m) => m.CallPageModule),
+    redirectTo: 'tabs/call',
+    pathMatch: 'full',
   },
   {
     path: 'settings',
-    loadChildren: () =>
-      import('./pages/settings/settings.module').then(
-        (m) => m.SettingsPageModule
-      ),
+    redirectTo: 'tabs/settings',
+    pathMatch: 'full',
   },
   {
     path: 'history',
+    redirectTo: 'tabs/history',
+    pathMatch: 'full',
+  },
+  {
+    path: 'tabs',
     loadChildren: () =>
-      import('./pages/history/history.module').then(
-        (m) => m.HistoryPageModule
-      ),
+      import('./pages/tabs/tabs.module').then((m) => m.TabsPageModule),
   },
 ];
 

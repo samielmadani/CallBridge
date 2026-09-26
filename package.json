@@ -37,8 +37,11 @@
     "@capacitor/device": "^5.0.6",
     "@capacitor/haptics": "^5.0.6",
     "@capacitor/keyboard": "^5.0.6",
+    "@capacitor/preferences": "^5.0.8",
     "@capacitor/status-bar": "^5.0.6",
     "@ionic/angular": "^7.2.0",
+    "cordova-plugin-android-permissions": "^1.1.5",
+    "cordova-plugin-inappbrowser": "^6.0.1",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "^0.13.0"

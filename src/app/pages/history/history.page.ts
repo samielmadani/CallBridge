@@ -57,7 +57,7 @@ export class HistoryPage implements OnInit {
   }
 
   openCall(call: FaceTimeCallData) {
-    // In a real app, you'd navigate to the call with this URL
-    this.router.navigate(['/call'], { state: { callData: call } });
+    this.faceTimeService.openCall(call);
+    this.router.navigate(['/tabs/call']);
   }
 }

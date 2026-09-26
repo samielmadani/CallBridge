@@ -32,8 +32,8 @@
           type="text"
           placeholder="Enter your name"
           [(ngModel)]="userName"
-          (blur)="onUserNameChange(userName)"
           debounce="500"
+          (ionInput)="onUserNameChange($event.detail.value || '')"
           clearInput
         ></ion-input>
         <small class="info-text">
@@ -49,7 +49,7 @@
         </div>
         <ion-toggle
           [checked]="autoJoinEnabled"
-          (ionChange)="toggleAutoJoin()"
+          (ionChange)="toggleAutoJoin($event.detail.checked)"
         ></ion-toggle>
       </div>
 

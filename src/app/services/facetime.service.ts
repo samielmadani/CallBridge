@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { App } from '@capacitor/app';
+import { Preferences } from '@capacitor/preferences';
 
 export interface FaceTimeCallData {
   url: string;
@@ -23,17 +24,18 @@ export class FaceTimeService {
 
   private autoJoinEnabled = new BehaviorSubject<boolean>(true);
   public autoJoinEnabled$ = this.autoJoinEnabled.asObservable();
+  private settingsReady: Promise<void>;
 
   constructor() {
+    this.settingsReady = this.loadUserSettings();
     this.initializeDeepLinking();
-    this.loadUserSettings();
   }
 
   private initializeDeepLinking() {
     App.addListener('appUrlOpen', (event: any) => {
       const url = event.url;
       if (this.isFaceTimeLink(url)) {
-        this.handleFaceTimeLink(url);
+        void this.handleFaceTimeLink(url);
       }
     });
   }
@@ -42,7 +44,8 @@ export class FaceTimeService {
     return url.includes('facetime.apple.com') || url.includes('facetime');
   }
 
-  handleFaceTimeLink(url: string) {
+  async handleFaceTimeLink(url: string) {
+    await this.settingsReady;
     const callData: FaceTimeCallData = {
       url,
       userName: this.userName.value,
@@ -57,14 +60,18 @@ export class FaceTimeService {
     }
   }
 
+  openCall(callData: FaceTimeCallData) {
+    this.currentCall.next(callData);
+  }
+
   setUserName(name: string) {
     this.userName.next(name);
-    localStorage.setItem('callbridge_username', name);
+    void Preferences.set({ key: 'callbridge_username', value: name });
   }
 
   setAutoJoin(enabled: boolean) {
     this.autoJoinEnabled.next(enabled);
-    localStorage.setItem('callbridge_autojoin', String(enabled));
+    void Preferences.set({ key: 'callbridge_autojoin', value: String(enabled) });
   }
 
   private addToHistory(callData: FaceTimeCallData) {
@@ -74,24 +81,39 @@ export class FaceTimeService {
       history.pop();
     }
     this.callHistory.next([...history]);
-    localStorage.setItem('callbridge_history', JSON.stringify(history));
+    void Preferences.set({ key: 'callbridge_history', value: JSON.stringify(history) });
   }
 
-  private loadUserSettings() {
-    const savedName = localStorage.getItem('callbridge_username');
-    if (savedName) {
+  private async readPreference(key: string): Promise<string | null> {
+    const stored = await Preferences.get({ key });
+    if (stored.value !== null) return stored.value;
+
+    const legacyValue = localStorage.getItem(key);
+    if (legacyValue !== null) {
+      await Preferences.set({ key, value: legacyValue });
+      localStorage.removeItem(key);
+    }
+    return legacyValue;
+  }
+
+  private async loadUserSettings() {
+    const [savedName, autoJoin, savedHistory] = await Promise.all([
+      this.readPreference('callbridge_username'),
+      this.readPreference('callbridge_autojoin'),
+      this.readPreference('callbridge_history'),
+    ]);
+
+    if (savedName !== null) {
       this.userName.next(savedName);
     }
 
-    const autoJoin = localStorage.getItem('callbridge_autojoin');
     if (autoJoin !== null) {
       this.autoJoinEnabled.next(autoJoin === 'true');
     }
 
-    const history = localStorage.getItem('callbridge_history');
-    if (history) {
+    if (savedHistory) {
       try {
-        this.callHistory.next(JSON.parse(history));
+        this.callHistory.next(JSON.parse(savedHistory));
       } catch (e) {
         console.error('Error loading call history', e);
       }
@@ -108,7 +130,7 @@ export class FaceTimeService {
 
   clearHistory() {
     this.callHistory.next([]);
-    localStorage.removeItem('callbridge_history');
+    void Preferences.remove({ key: 'callbridge_history' });
   }
 
   endCall() {

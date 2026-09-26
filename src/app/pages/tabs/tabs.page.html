@@ -1,0 +1,18 @@
+<ion-tabs (touchstart)="recordSwipeStart($event)" (touchend)="completeSwipe($event)">
+  <ion-router-outlet></ion-router-outlet>
+
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="call" href="/tabs/call">
+      <ion-icon name="call-outline"></ion-icon>
+      <ion-label>Call</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="history" href="/tabs/history">
+      <ion-icon name="time-outline"></ion-icon>
+      <ion-label>History</ion-label>
+    </ion-tab-button>
+    <ion-tab-button tab="settings" href="/tabs/settings">
+      <ion-icon name="settings-outline"></ion-icon>
+      <ion-label>Settings</ion-label>
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

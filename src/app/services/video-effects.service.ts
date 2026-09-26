@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Preferences } from '@capacitor/preferences';
 
 export interface VideoFilter {
   name: string;
@@ -57,10 +58,11 @@ export class VideoEffectsService {
       enabled: f.name === filter.name,
     }));
     this.availableFilters = updated;
-    this.activeFilter.next(filter);
+    const activeFilter = updated.find((item) => item.name === filter.name)!;
+    this.activeFilter.next(activeFilter);
 
     this.applyFilterEffects(filter.name);
-    localStorage.setItem('callbridge_filter', filter.name);
+    void Preferences.set({ key: 'callbridge_filter', value: filter.name });
   }
 
   private applyFilterEffects(filterName: string) {
@@ -103,7 +105,7 @@ export class VideoEffectsService {
     const currentEffects = this.effectOptions.value;
     currentEffects[key] = value;
     this.effectOptions.next({ ...currentEffects });
-    localStorage.setItem('callbridge_effects', JSON.stringify(currentEffects));
+    void Preferences.set({ key: 'callbridge_effects', value: JSON.stringify(currentEffects) });
   }
 
   resetEffects() {
@@ -114,11 +116,26 @@ export class VideoEffectsService {
       saturate: 100,
       hueRotate: 0,
     });
-    localStorage.removeItem('callbridge_effects');
+    void Preferences.remove({ key: 'callbridge_effects' });
   }
 
-  private loadSavedSettings() {
-    const savedFilter = localStorage.getItem('callbridge_filter');
+  private async readPreference(key: string): Promise<string | null> {
+    const stored = await Preferences.get({ key });
+    if (stored.value !== null) return stored.value;
+
+    const legacyValue = localStorage.getItem(key);
+    if (legacyValue !== null) {
+      await Preferences.set({ key, value: legacyValue });
+      localStorage.removeItem(key);
+    }
+    return legacyValue;
+  }
+
+  private async loadSavedSettings() {
+    const [savedFilter, savedEffects] = await Promise.all([
+      this.readPreference('callbridge_filter'),
+      this.readPreference('callbridge_effects'),
+    ]);
     if (savedFilter) {
       const filter = this.availableFilters.find((f) => f.name === savedFilter);
       if (filter) {
@@ -126,7 +143,6 @@ export class VideoEffectsService {
       }
     }
 
-    const savedEffects = localStorage.getItem('callbridge_effects');
     if (savedEffects) {
       try {
         this.effectOptions.next(JSON.parse(savedEffects));
