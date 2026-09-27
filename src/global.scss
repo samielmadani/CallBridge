@@ -1,27 +1,37 @@
 :root {
-  --cb-ink: #081820;
-  --cb-surface: #10262e;
-  --cb-line: #25414a;
-  --cb-text: #f1f7f4;
-  --cb-muted: #9ab0b2;
-  --cb-cyan: #53e2cf;
-  --cb-lime: #d6f56a;
-  --cb-coral: #f46c63;
+  --cb-ink: #171a16;
+  --cb-surface: #22251f;
+  --cb-raised: #2c3028;
+  --cb-line: rgba(243, 242, 231, 0.12);
+  --cb-text: #f3f2e7;
+  --cb-muted: #a5a99a;
+  --cb-citron: #d6ef79;
+  --cb-coral: #f27660;
+  --cb-gold: #e6bd71;
   --ion-background-color: var(--cb-ink);
   --ion-text-color: var(--cb-text);
-  --ion-toolbar-background: #0b1d25;
+  --ion-toolbar-background: var(--cb-ink);
   --ion-toolbar-color: var(--cb-text);
-  --ion-color-primary: var(--cb-cyan);
-  --ion-color-primary-rgb: 83, 226, 207;
-  --ion-color-primary-contrast: #061512;
-  --ion-color-primary-contrast-rgb: 6, 21, 18;
-  --ion-color-primary-shade: #49c7b6;
-  --ion-color-primary-tint: #66e5d4;
+  --ion-color-primary: var(--cb-citron);
+  --ion-color-primary-rgb: 214, 239, 121;
+  --ion-color-primary-contrast: #171a16;
+  --ion-color-primary-contrast-rgb: 23, 26, 22;
+  --ion-color-primary-shade: #bdd36b;
+  --ion-color-primary-tint: #daf18a;
   --ion-color-danger: var(--cb-coral);
-  --ion-color-danger-rgb: 244, 108, 99;
-  --ion-color-danger-contrast: #1b0908;
-  --ion-color-danger-shade: #d76057;
-  --ion-color-danger-tint: #f57c74;
+  --ion-color-danger-rgb: 242, 118, 96;
+  --ion-color-danger-contrast: #171a16;
+  --ion-color-danger-shade: #d56854;
+  --ion-color-danger-tint: #f48672;
+  --ion-color-secondary: var(--cb-gold);
+  --ion-color-secondary-contrast: #171a16;
+  --ion-color-success: var(--cb-citron);
+  --ion-color-warning: var(--cb-gold);
+  --ion-color-medium: var(--cb-muted);
+  --ion-color-dark: var(--cb-ink);
+  --ion-color-light: var(--cb-text);
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
   color-scheme: dark;
   font-family: 'Aptos', 'Segoe UI Variable', 'Segoe UI', sans-serif;
 }
@@ -43,7 +53,8 @@ ion-page {
 }
 
 body {
-  background: var(--cb-ink);
+  background-color: var(--cb-ink);
+  background-image: repeating-linear-gradient(135deg, rgba(243, 242, 231, 0.018) 0 1px, transparent 1px 6px);
   color: var(--cb-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -58,12 +69,12 @@ select {
 
 ::selection {
   color: var(--cb-ink);
-  background: var(--cb-lime);
+  background: var(--cb-citron);
 }
 
 ion-toolbar {
-  --background: #0b1d25;
-  --border-width: 0 0 1px;
+  --background: transparent;
+  --border-width: 0;
   --border-color: var(--cb-line);
 }
 
@@ -73,44 +84,86 @@ ion-title {
 }
 
 ion-content {
-  --background: var(--cb-ink);
+  --background: transparent;
   --color: var(--cb-text);
 }
 
 ion-button {
-  --border-radius: 6px;
+  --border-radius: 999px;
+  --box-shadow: none;
   text-transform: none;
   font-weight: 650;
+  letter-spacing: 0;
 }
 
 ion-tab-bar {
-  --background: #0b1d25;
-  --color: #8fa6aa;
-  --color-selected: var(--cb-cyan);
+  --background: rgba(23, 26, 22, 0.96);
+  --color: #929688;
+  --color-selected: var(--cb-citron);
   --border: 1px solid var(--cb-line);
-  height: 66px;
-  padding-top: 5px;
+  height: 72px;
+  padding: 5px 12px calc(5px + env(safe-area-inset-bottom));
+  backdrop-filter: blur(18px);
 }
 
 ion-tab-button {
-  --ripple-color: rgba(83, 226, 207, 0.16);
-  font-size: 11px;
-  font-weight: 650;
+  --ripple-color: rgba(214, 239, 121, 0.15);
+  --padding-top: 7px;
+  --padding-bottom: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-ion-tab-button ion-icon {
-  font-size: 20px;
+ion-tab-button svg {
+  width: 21px;
+  height: 21px;
+  margin-bottom: 4px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 ion-input,
 ion-textarea {
   --color: var(--cb-text);
-  --placeholder-color: #789196;
-  --highlight-color-focused: var(--cb-cyan);
+  --placeholder-color: #818678;
+  --highlight-color-focused: var(--cb-citron);
 }
 
 ion-range {
-  --bar-background: #28414a;
-  --bar-background-active: var(--cb-cyan);
+  --bar-background: #3b3e35;
+  --bar-background-active: var(--cb-citron);
   --knob-background: var(--cb-text);
+}
+
+ion-header {
+  box-shadow: none;
+}
+
+ion-button {
+  transition: transform 140ms ease, filter 140ms ease, background-color 140ms ease;
+}
+
+ion-button:active {
+  transform: scale(0.97);
+}
+
+ion-toggle {
+  --track-background: #3b3e35;
+  --track-background-checked: var(--cb-citron);
+  --handle-background: #f3f2e7;
+  --handle-background-checked: var(--cb-ink);
+}
+
+ion-segment {
+  --background: transparent;
+}
+
+ion-segment-button {
+  --indicator-color: var(--cb-citron);
+  --color-checked: var(--cb-ink);
 }

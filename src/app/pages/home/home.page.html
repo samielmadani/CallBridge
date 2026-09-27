@@ -1,110 +1,47 @@
-<ion-header [translucent]="true">
-  <ion-toolbar color="dark">
-    <ion-title>CallBridge</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="navigateToSettings()" color="secondary">
-        <ion-icon name="settings-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true">
+  <main class="home-page">
+    <header class="home-heading">
+      <p class="eyebrow">CALLBRIDGE / YOUR SPACE</p>
+      <h1>Closer, even<br /><em>from here.</em></h1>
+      <p>Set your caller details, then open any FaceTime link to join.</p>
+    </header>
 
-<ion-content [fullscreen]="true" color="dark">
-  <!-- Header Section -->
-  <div class="hero-section">
-    <div class="hero-icon">
-      <ion-icon name="videocam"></ion-icon>
-    </div>
-    <h1>Ready for FaceTime?</h1>
-    <p>Click a FaceTime link and join instantly</p>
-  </div>
-
-  <!-- Main Card -->
-  <ion-card class="setup-card" color="dark">
-    <ion-card-header>
-      <ion-card-title>Your Profile</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <!-- Username Input -->
-      <div class="form-group">
-        <ion-label position="floating">Your Name</ion-label>
-        <ion-input
-          type="text"
-          placeholder="Enter your name"
-          [(ngModel)]="userName"
-          debounce="500"
-          (ionInput)="onUserNameChange($event.detail.value || '')"
-          clearInput
-        ></ion-input>
-        <small class="info-text">
-          This name will be sent to FaceTime calls
-        </small>
+    <section class="home-section profile-section">
+      <div class="section-title">
+        <span>01</span>
+        <h2>Your profile</h2>
       </div>
-
-      <!-- Auto-Join Toggle -->
-      <div class="toggle-group">
-        <div class="toggle-label">
-          <ion-label>Auto-Join Calls</ion-label>
-          <small>Automatically join calls with your name</small>
+      <ion-input
+        label="Your name"
+        label-placement="stacked"
+        type="text"
+        placeholder="Enter your name"
+        [(ngModel)]="userName"
+        debounce="500"
+        (ionInput)="onUserNameChange($event.detail.value || '')"
+      ></ion-input>
+      <div class="home-toggle">
+        <div>
+          <h3>Auto-join</h3>
+          <p>Fill in your saved name when a call opens.</p>
         </div>
-        <ion-toggle
-          [checked]="autoJoinEnabled"
-          (ionChange)="toggleAutoJoin($event.detail.checked)"
-        ></ion-toggle>
+        <ion-toggle [checked]="autoJoinEnabled" (ionChange)="toggleAutoJoin($event.detail.checked)" aria-label="Auto-join calls"></ion-toggle>
       </div>
+    </section>
 
-      <!-- Status -->
-      <div class="status-section">
-        <div class="status-item">
-          <ion-icon name="person-circle" color="primary"></ion-icon>
-          <div>
-            <small>Current Name</small>
-            <p>{{ userName || 'Not set' }}</p>
-          </div>
-        </div>
-        <div class="status-item">
-          <ion-icon
-            [name]="autoJoinEnabled ? 'checkmark-circle' : 'close-circle'"
-            [color]="autoJoinEnabled ? 'success' : 'medium'"
-          ></ion-icon>
-          <div>
-            <small>Auto-Join Status</small>
-            <p>{{ autoJoinEnabled ? 'Enabled' : 'Disabled' }}</p>
-          </div>
-        </div>
+    <section class="home-section quick-section">
+      <div class="section-title">
+        <span>02</span>
+        <h2>Go somewhere</h2>
       </div>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Quick Access -->
-  <ion-card class="quick-access-card" color="dark">
-    <ion-card-header>
-      <ion-card-title>Quick Access</ion-card-title>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-button expand="block" fill="solid" color="primary">
-        <ion-icon slot="start" name="call"></ion-icon>
-        New Call
-      </ion-button>
-      <ion-button expand="block" fill="outline" (click)="navigateToHistory()">
-        <ion-icon slot="start" name="time"></ion-icon>
-        Call History
-      </ion-button>
-    </ion-card-content>
-  </ion-card>
-
-  <!-- Info Section -->
-  <div class="info-section">
-    <ion-card color="dark" class="info-card">
-      <ion-card-content>
-        <h3>How it works</h3>
-        <ol>
-          <li>Set your name above</li>
-          <li>Click a FaceTime link from an iPhone user</li>
-          <li>CallBridge opens FaceTime links and auto-joins calls</li>
-          <li>Enjoy video calling with your friends!</li>
-        </ol>
-      </ion-card-content>
-    </ion-card>
-  </div>
+      <button type="button" class="home-link primary-link" (click)="navigateToCall()">
+        <span>Open a call</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" /></svg>
+      </button>
+      <button type="button" class="home-link" (click)="navigateToHistory()">
+        <span>Call history</span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" /></svg>
+      </button>
+    </section>
+  </main>
 </ion-content>

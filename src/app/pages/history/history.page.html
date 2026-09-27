@@ -1,33 +1,30 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>History</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
-  <div *ngIf="callHistory.length === 0" class="empty-state">
-    <div class="empty-icon">
-      <ion-icon name="time-outline"></ion-icon>
-    </div>
-    <h1>No calls yet</h1>
-    <p>Your recent calls will appear here.</p>
-  </div>
+  <main class="history-page">
+    <header class="page-heading">
+      <div>
+        <p class="eyebrow">YOUR RECENT CONNECTIONS</p>
+        <h1>Call history</h1>
+      </div>
+      <span class="history-count">{{ callHistory.length | number: '2.0' }}</span>
+    </header>
 
-  <div *ngIf="callHistory.length > 0" class="history-container">
-    <ion-list color="dark">
-      <ion-item
-        *ngFor="let call of callHistory"
-        class="history-item"
-        color="dark"
-        (click)="openCall(call)"
-      >
-        <ion-label>
-          <div class="call-title">{{ call.userName || 'Anonymous' }}</div>
-          <small class="call-date">{{ formatDate(call.joinedAt) }}</small>
-          <small class="call-id">{{ extractCallId(call.url) }}</small>
-        </ion-label>
-        <ion-icon slot="end" name="arrow-forward"></ion-icon>
-      </ion-item>
-    </ion-list>
-  </div>
+    <section *ngIf="callHistory.length === 0" class="empty-state">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="17"/><path d="M24 14v10l7 4"/><path d="M7 9v8h8"/></svg>
+      <h2>A little quiet here.</h2>
+      <p>Calls you open will be kept here for an easy return.</p>
+    </section>
+
+    <ol *ngIf="callHistory.length > 0" class="history-list">
+      <li *ngFor="let call of callHistory; let index = index">
+        <button type="button" class="history-item" (click)="openCall(call)">
+          <span class="history-index">{{ (index + 1) | number: '2.0' }}</span>
+          <span class="history-copy">
+            <span class="call-title">{{ call.userName || 'Guest call' }}</span>
+            <span class="call-metadata">{{ formatDate(call.joinedAt) }} <i></i> {{ extractCallId(call.url) }}</span>
+          </span>
+          <svg class="history-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" /></svg>
+        </button>
+      </li>
+    </ol>
+  </main>
 </ion-content>

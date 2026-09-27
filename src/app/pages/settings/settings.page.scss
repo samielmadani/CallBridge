@@ -1,26 +1,63 @@
-ion-content {
-  --background: var(--cb-ink);
-}
-
 .settings-page {
   width: min(100%, 760px);
   margin: 0 auto;
-  padding: 8px 22px 40px;
+  padding: 50px 28px calc(112px + env(safe-area-inset-bottom));
+}
+
+.page-heading {
+  padding-bottom: 28px;
+}
+
+.eyebrow {
+  margin: 0 0 10px;
+  color: var(--cb-citron);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.page-heading h1 {
+  margin: 0;
+  color: var(--cb-text);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 37px;
+  font-weight: 400;
+}
+
+.page-intro {
+  margin: 10px 0 0;
+  color: var(--cb-muted);
+  font-size: 14px;
+  line-height: 1.5;
 }
 
 .settings-section {
-  padding: 22px 0;
+  padding: 24px 0;
   border-bottom: 1px solid var(--cb-line);
 }
 
-.settings-section h2 {
-  margin: 0 0 12px;
+.section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 16px;
+}
+
+.section-heading > span {
+  padding-top: 2px;
+  color: var(--cb-citron);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+
+.section-heading h2 {
+  margin: 0;
   color: var(--cb-text);
   font-size: 16px;
   font-weight: 700;
 }
 
-.settings-section p {
+.section-heading p {
   margin: 5px 0 0;
   color: var(--cb-muted);
   font-size: 13px;
@@ -28,47 +65,49 @@ ion-content {
 }
 
 .settings-section ion-input {
-  --background: var(--cb-surface);
-  --border-color: var(--cb-line);
-  --border-radius: 6px;
+  --background: rgba(243, 242, 231, 0.035);
+  --border-color: rgba(243, 242, 231, 0.16);
+  --border-radius: 10px;
   --color: var(--cb-text);
-  --highlight-color-focused: var(--cb-cyan);
-  margin-top: 12px;
+  --highlight-color-focused: var(--cb-citron);
+  --padding-start: 14px;
+  --padding-end: 14px;
+  margin-top: 8px;
 }
 
 .preference-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.preference-row h2 {
-  margin-bottom: 0;
 }
 
 .preference-row ion-toggle {
   flex: 0 0 auto;
-  --background-checked: var(--cb-cyan);
+  --background-checked: var(--cb-citron);
   --handle-background-checked: var(--cb-ink);
 }
 
 .effects-section ion-segment {
-  margin: 18px 0 20px;
-  --background: var(--cb-surface);
+  margin: 12px 0 22px;
+  padding: 4px;
+  border: 1px solid var(--cb-line);
+  border-radius: 999px;
+  --background: rgba(243, 242, 231, 0.035);
 }
 
 .effects-section ion-segment-button {
-  min-width: 72px;
-  --border-radius: 5px;
+  min-width: 64px;
+  min-height: 34px;
+  --border-radius: 999px;
   --color-checked: var(--cb-ink);
-  --indicator-color: var(--cb-cyan);
-  font-size: 12px;
+  --indicator-color: var(--cb-citron);
+  font-size: 11px;
+  font-weight: 650;
 }
 
 .effect-control {
-  padding: 12px 0 4px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.045);
+  padding: 14px 0 8px;
+  border-bottom: 1px solid rgba(243, 242, 231, 0.07);
 }
 
 .effect-control label {
@@ -76,7 +115,7 @@ ion-content {
   justify-content: space-between;
   gap: 16px;
   color: var(--cb-text);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -86,31 +125,49 @@ ion-content {
 }
 
 .effect-control ion-range {
-  --bar-background: #28414a;
-  --bar-background-active: var(--cb-cyan);
+  --bar-background: #3b3e35;
+  --bar-background-active: var(--cb-citron);
   --knob-background: var(--cb-text);
-  --pin-background: var(--cb-cyan);
+  --pin-background: var(--cb-citron);
   --pin-color: var(--cb-ink);
   padding-inline: 0;
 }
 
-.reset-effects {
-  --color: var(--cb-cyan);
-  margin-top: 12px;
+.text-action {
+  --color: var(--cb-citron);
+  margin: 14px 0 0;
+  font-size: 12px;
+  font-weight: 700;
 }
 
-.data-section {
-  border-bottom: 0;
+.text-action svg,
+.clear-history-button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.data-section ion-button {
-  --border-radius: 6px;
-  --border-color: rgba(244, 108, 99, 0.65);
-  margin-top: 4px;
+.clear-history-button {
+  --background: rgba(242, 118, 96, 0.12);
+  --background-activated: rgba(242, 118, 96, 0.2);
+  --color: var(--cb-coral);
+  height: 42px;
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 @media (max-width: 380px) {
   .settings-page {
-    padding-inline: 16px;
+    padding-inline: 20px;
+  }
+
+  .effects-section ion-segment-button {
+    min-width: 54px;
+    font-size: 10px;
   }
 }

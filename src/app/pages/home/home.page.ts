@@ -47,6 +47,10 @@ export class HomePage implements OnInit {
     this.router.navigate(['/settings']);
   }
 
+  navigateToCall() {
+    this.router.navigate(['/tabs/call']);
+  }
+
   navigateToHistory() {
     this.router.navigate(['/history']);
   }

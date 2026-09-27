@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { Capacitor } from '@capacitor/core';
+import { App } from '@capacitor/app';
+import { Capacitor, PluginListenerHandle } from '@capacitor/core';
 import { Style, StatusBar } from '@capacitor/status-bar';
 import { ToastController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
@@ -58,6 +59,7 @@ export class CallPage implements OnInit, OnDestroy {
   private timerInterval: ReturnType<typeof setInterval> | null = null;
   private browserRef: EmbeddedBrowser | null = null;
   private subscriptions = new Subscription();
+  private backButtonListener: PluginListenerHandle | null = null;
 
   constructor(
     private faceTimeService: FaceTimeService,
@@ -67,6 +69,14 @@ export class CallPage implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    void App.addListener('backButton', ({ canGoBack }) => {
+      if (this.currentCall) return;
+      if (canGoBack) window.history.back();
+      else void App.exitApp();
+    }).then((listener) => {
+      this.backButtonListener = listener;
+    });
+
     this.subscriptions.add(
       this.faceTimeService.userName$.subscribe((name) => {
         this.userName = name;
@@ -147,11 +157,12 @@ export class CallPage implements OnInit, OnDestroy {
     this.browserRef = cordova.InAppBrowser.open(
       targetUrl,
       '_blank',
-      'location=no,toolbar=yes,toolbarposition=top,toolbarcolor=#081820,closebuttoncaption=End,closebuttoncolor=#53e2cf,hidenavigationbuttons=yes,hideurlbar=yes,hardwareback=yes,mediaPlaybackRequiresUserAction=no,zoom=no'
+      'location=no,toolbar=yes,toolbarposition=top,toolbarcolor=#171a16,closebuttoncaption=End call,closebuttoncolor=#d6ef79,hidenavigationbuttons=yes,hideurlbar=yes,hardwareback=yes,fullscreen=yes,mediaPlaybackRequiresUserAction=no,zoom=no'
     );
     this.isEmbeddedCallOpen = true;
     this.browserRef.addEventListener('loadstop', (event) => {
       if (event.url?.includes('facetime.apple.com')) {
+        this.applyCallPresentation();
         this.attemptAutoJoin();
         this.applyCallEffects();
       }
@@ -219,6 +230,75 @@ export class CallPage implements OnInit, OnDestroy {
     });
   }
 
+  private applyCallPresentation() {
+    if (!this.browserRef) return;
+    this.browserRef.executeScript({
+      code: `(function() {
+        if (!document.getElementById('callbridge-call-style')) {
+          var style = document.createElement('style');
+          style.id = 'callbridge-call-style';
+          style.textContent = ${JSON.stringify(`
+            :root {
+              color-scheme: dark !important;
+              --accent-color: #d6ef79 !important;
+              --tint-color: #d6ef79 !important;
+              --system-green: #d6ef79 !important;
+              font-family: 'Aptos', 'Segoe UI Variable', 'Segoe UI', sans-serif !important;
+            }
+            html, body, #root, main {
+              background-color: transparent !important;
+              color: #f3f2e7 !important;
+            }
+            *, *::before, *::after {
+              font-family: 'Aptos', 'Segoe UI Variable', 'Segoe UI', sans-serif !important;
+              letter-spacing: 0 !important;
+            }
+            button, [role="button"], input[type="button"], input[type="submit"] {
+              appearance: none !important;
+              -webkit-appearance: none !important;
+              border: 1px solid rgba(255,255,255,.18) !important;
+              border-radius: 16px !important;
+              background: rgba(25,28,24,.82) !important;
+              color: #f5f4ed !important;
+              box-shadow: 0 8px 24px rgba(0,0,0,.24) !important;
+              font: 600 14px/1.2 'Aptos', 'Segoe UI Variable', 'Segoe UI', sans-serif !important;
+              transition: transform .14s ease, background-color .14s ease !important;
+            }
+            button:active, [role="button"]:active {
+              transform: scale(.96) !important;
+              background: rgba(214,239,121,.2) !important;
+            }
+            button[aria-label], [role="button"][aria-label] {
+              border-radius: 50% !important;
+              background: rgba(25,28,24,.74) !important;
+              box-shadow: 0 5px 20px rgba(0,0,0,.3) !important;
+            }
+            button[aria-label*="join" i], [role="button"][aria-label*="join" i],
+            button[type="submit"], input[type="submit"] {
+              border: 0 !important;
+              border-radius: 999px !important;
+              background: #d6ef79 !important;
+              color: #171a16 !important;
+            }
+            [class*="card"], [class*="panel"], [class*="container"] {
+              border-color: transparent !important;
+              box-shadow: none !important;
+            }
+          `)};
+          document.head.appendChild(style);
+        }
+        if (!window.__callBridgeBackGuard) {
+          window.__callBridgeBackGuard = true;
+          var pinHistory = function() {
+            try { history.pushState({ callBridgeActive: true }, '', location.href); } catch (_) {}
+          };
+          pinHistory();
+          window.addEventListener('popstate', pinHistory);
+        }
+      })();`,
+    });
+  }
+
   getCallFilterStyle(): string {
     const effects = this.filterOptions;
     return `blur(${effects.blur}px) brightness(${effects.brightness}%) contrast(${effects.contrast}%) saturate(${effects.saturate}%) hue-rotate(${effects.hueRotate}deg)`;
@@ -237,7 +317,19 @@ export class CallPage implements OnInit, OnDestroy {
 
   private async setCallStatusBar() {
     try {
-      await StatusBar.setBackgroundColor({ color: '#081820' });
+      await StatusBar.hide();
+      await StatusBar.setOverlaysWebView({ overlay: true });
+      await StatusBar.setStyle({ style: Style.Dark });
+    } catch {
+      return;
+    }
+  }
+
+  private async restoreStatusBar() {
+    try {
+      await StatusBar.show();
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setBackgroundColor({ color: '#171a16' });
       await StatusBar.setStyle({ style: Style.Light });
     } catch {
       return;
@@ -277,6 +369,7 @@ export class CallPage implements OnInit, OnDestroy {
     this.callDuration = 0;
     if (this.timerInterval) clearInterval(this.timerInterval);
     this.timerInterval = null;
+    void this.restoreStatusBar();
   }
 
   private pad(value: number): string {
@@ -285,6 +378,7 @@ export class CallPage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
+    void this.backButtonListener?.remove();
     if (this.timerInterval) clearInterval(this.timerInterval);
   }
 }

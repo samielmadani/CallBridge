@@ -1,13 +1,19 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Settings</ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
   <main class="settings-page">
+    <header class="page-heading">
+      <p class="eyebrow">MAKE IT YOURS</p>
+      <h1>Preferences</h1>
+      <p class="page-intro">A few details make every call feel like yours.</p>
+    </header>
+
     <section class="settings-section">
-      <h2>Caller profile</h2>
+      <div class="section-heading">
+        <span>01</span>
+        <div>
+          <h2>Caller profile</h2>
+          <p>How others will see you arrive.</p>
+        </div>
+      </div>
       <ion-input
         label="Your name"
         label-placement="stacked"
@@ -16,15 +22,16 @@
         [(ngModel)]="userName"
         debounce="300"
         (ionInput)="onUserNameChange($event.detail.value || '')"
-        clearInput
       ></ion-input>
-      <p class="settings-note">Used when CallBridge joins a FaceTime link.</p>
     </section>
 
     <section class="settings-section preference-row">
-      <div>
-        <h2>Auto-join</h2>
-        <p>Enter your saved name automatically when a link opens.</p>
+      <div class="section-heading">
+        <span>02</span>
+        <div>
+          <h2>Auto-join</h2>
+          <p>Enter your saved name when a link opens.</p>
+        </div>
       </div>
       <ion-toggle
         [checked]="autoJoinEnabled"
@@ -34,8 +41,13 @@
     </section>
 
     <section class="settings-section effects-section">
-      <h2>Call view</h2>
-      <p class="settings-note">These effects change only your local view.</p>
+      <div class="section-heading">
+        <span>03</span>
+        <div>
+          <h2>Call view</h2>
+          <p>Adjustments stay on this device.</p>
+        </div>
+      </div>
       <ion-segment
         [value]="activeFilter?.name || 'Normal'"
         (ionChange)="selectFilter($event.detail.value || 'Normal')"
@@ -63,16 +75,22 @@
         <label for="saturation-range">Saturation <span>{{ filterOptions.saturate }}%</span></label>
         <ion-range id="saturation-range" min="0" max="200" [value]="filterOptions.saturate" (ionChange)="updateEffect('saturate', $event.detail.value)"></ion-range>
       </div>
-      <ion-button fill="clear" class="reset-effects" (click)="resetEffects()">
-        <ion-icon slot="start" name="refresh-outline"></ion-icon>
+      <ion-button fill="clear" class="text-action reset-effects" (click)="resetEffects()">
+        <svg slot="start" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.8-3L4 10m0 0V5m0 5h5M4 13a8 8 0 0 0 14.8 3L20 14m0 0v5m0-5h-5" /></svg>
         Reset effects
       </ion-button>
     </section>
 
     <section class="settings-section data-section">
-      <h2>Call history</h2>
-      <ion-button fill="outline" color="danger" (click)="clearHistory()">
-        <ion-icon slot="start" name="trash-outline"></ion-icon>
+      <div class="section-heading">
+        <span>04</span>
+        <div>
+          <h2>Call history</h2>
+          <p>Remove saved call links from this device.</p>
+        </div>
+      </div>
+      <ion-button class="clear-history-button" (click)="clearHistory()">
+        <svg slot="start" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3m3 0-1 13H7L6 7m4 4v5m4-5v5" /></svg>
         Clear history
       </ion-button>
     </section>

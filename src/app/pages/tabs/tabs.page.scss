@@ -9,5 +9,5 @@ ion-tabs {
 }
 
 ion-tab-bar {
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(5px + env(safe-area-inset-bottom));
 }
