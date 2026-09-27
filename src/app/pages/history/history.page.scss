@@ -42,7 +42,7 @@
 }
 
 .history-list li {
-  border-top: 1px solid var(--cb-line);
+  margin-bottom: 10px;
 }
 
 .history-item {
@@ -51,18 +51,24 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 14px 8px 14px 0;
-  border: 0;
-  background: transparent;
+  padding: 14px 16px;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  background:
+    linear-gradient(var(--cb-glass), var(--cb-glass)) padding-box,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(214, 239, 121, 0.38)) border-box;
   color: inherit;
+  box-shadow: var(--cb-glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
   text-align: left;
   cursor: pointer;
   transition: background-color 140ms ease, padding 140ms ease;
 }
 
 .history-item:active {
-  padding-left: 8px;
-  background: rgba(243, 242, 231, 0.035);
+  filter: brightness(1.15);
+  transform: scale(0.99);
 }
 
 .history-index {

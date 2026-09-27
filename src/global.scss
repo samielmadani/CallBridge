@@ -8,6 +8,9 @@
   --cb-citron: #d6ef79;
   --cb-coral: #f27660;
   --cb-gold: #e6bd71;
+  --cb-glass: rgba(44, 48, 40, 0.64);
+  --cb-glass-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --cb-glass-blur: 38px;
   --ion-background-color: var(--cb-ink);
   --ion-text-color: var(--cb-text);
   --ion-toolbar-background: var(--cb-ink);
@@ -54,7 +57,10 @@ ion-page {
 
 body {
   background-color: var(--cb-ink);
-  background-image: repeating-linear-gradient(135deg, rgba(243, 242, 231, 0.018) 0 1px, transparent 1px 6px);
+  background-image:
+    linear-gradient(145deg, transparent 35%, rgba(214, 239, 121, 0.07) 51%, transparent 68%),
+    linear-gradient(35deg, transparent 62%, rgba(242, 118, 96, 0.055) 77%, transparent 91%),
+    repeating-linear-gradient(135deg, rgba(243, 242, 231, 0.018) 0 1px, transparent 1px 6px);
   color: var(--cb-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -89,21 +95,59 @@ ion-content {
 }
 
 ion-button {
+  --background: var(--cb-glass);
+  --background-activated: rgba(214, 239, 121, 0.2);
+  --background-focused: rgba(214, 239, 121, 0.16);
+  --border-color: rgba(255, 255, 255, 0.56);
   --border-radius: 999px;
-  --box-shadow: none;
+  --border-style: solid;
+  --border-width: 1px;
+  --box-shadow: var(--cb-glass-shadow);
+  --color: var(--cb-text);
+  backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
   text-transform: none;
   font-weight: 650;
   letter-spacing: 0;
 }
 
+ion-button:hover {
+  --background: rgba(54, 59, 48, 0.76);
+  filter: brightness(1.08);
+}
+
+ion-button[disabled] {
+  --box-shadow: none;
+  filter: saturate(0.45);
+  opacity: 0.46;
+}
+
 ion-tab-bar {
-  --background: rgba(23, 26, 22, 0.96);
+  --background: transparent;
   --color: #929688;
   --color-selected: var(--cb-citron);
-  --border: 1px solid var(--cb-line);
-  height: 72px;
-  padding: 5px 12px calc(5px + env(safe-area-inset-bottom));
-  backdrop-filter: blur(18px);
+  --border: 0;
+  position: absolute;
+  right: 20px;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  left: 20px;
+  width: auto;
+  height: 64px;
+  padding: 5px 12px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 28px;
+  background:
+    linear-gradient(var(--cb-glass), var(--cb-glass)) padding-box,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(214, 239, 121, 0.38)) border-box;
+  box-shadow: var(--cb-glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  z-index: 20;
+}
+
+.call-in-progress ion-tab-bar {
+  display: none !important;
 }
 
 ion-tab-button {
@@ -114,6 +158,7 @@ ion-tab-button {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+  border-radius: 22px;
 }
 
 ion-tab-button svg {
@@ -125,6 +170,10 @@ ion-tab-button svg {
   stroke-width: 1.7;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+ion-tab-button.tab-selected {
+  --background: rgba(214, 239, 121, 0.12);
 }
 
 ion-input,
@@ -166,4 +215,92 @@ ion-segment {
 ion-segment-button {
   --indicator-color: var(--cb-citron);
   --color-checked: var(--cb-ink);
+}
+
+.call-active {
+  position: fixed;
+  inset: 0;
+  display: block;
+  min-height: 100dvh;
+  padding: 0;
+  background: #090a08;
+}
+
+.call-hud-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.call-hud-heading > div {
+  min-width: 0;
+}
+
+.embedded-call-state {
+  position: absolute;
+  inset: auto 18px calc(24px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 20px;
+  border: 1px solid transparent;
+  border-radius: 28px;
+  background:
+    linear-gradient(var(--cb-glass), var(--cb-glass)) padding-box,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(214, 239, 121, 0.38)) border-box;
+  box-shadow: var(--cb-glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+}
+
+.embedded-call-state .eyebrow {
+  margin-bottom: 4px;
+}
+
+.embedded-call-state h1 {
+  overflow: hidden;
+  margin: 0;
+  color: var(--cb-text);
+  font-size: 16px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.call-clock {
+  margin-left: 8px;
+  color: var(--cb-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.end-call-button {
+  --background: rgba(242, 118, 96, 0.2);
+  --background-activated: rgba(242, 118, 96, 0.34);
+  --border-color: rgba(242, 118, 96, 0.62);
+  --color: #ff9a84;
+  --box-shadow: var(--cb-glass-shadow);
+  width: 56px;
+  height: 56px;
+  flex: 0 0 56px;
+  margin: 0;
+  backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+}
+
+.end-call-button svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+  transform: rotate(135deg);
+}
+
+@media (max-width: 520px) {
+  .embedded-call-state {
+    inset-inline: 12px;
+    gap: 10px;
+    padding: 14px;
+  }
 }

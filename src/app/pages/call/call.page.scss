@@ -114,14 +114,18 @@
 }
 
 .join-button {
-  --background: var(--cb-citron);
-  --background-activated: #c2dd68;
-  --color: var(--cb-ink);
+  --background: rgba(214, 239, 121, 0.16);
+  --background-activated: rgba(214, 239, 121, 0.26);
+  --border-color: rgba(214, 239, 121, 0.58);
+  --color: var(--cb-citron);
   --border-radius: 12px;
+  --box-shadow: var(--cb-glass-shadow);
   height: 54px;
   margin: 0;
   font-size: 14px;
   font-weight: 800;
+  backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
 }
 
 .call-hint {
@@ -143,102 +147,6 @@
   box-shadow: 0 0 14px rgba(214, 239, 121, 0.55);
 }
 
-.call-active {
-  position: fixed;
-  inset: 0;
-  display: block;
-  min-height: 100dvh;
-  padding: 0;
-  background: #090a08;
-}
-
-.call-stage {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-
-.call-frame {
-  width: 100%;
-  height: 100%;
-  border: 0;
-  background: #090a08;
-}
-
-.call-hud {
-  position: absolute;
-  inset: auto 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 60px 24px calc(30px + env(safe-area-inset-bottom));
-  color: var(--cb-text);
-  background: linear-gradient(0deg, rgba(9, 10, 8, 0.94), rgba(9, 10, 8, 0));
-}
-
-.call-hud-heading {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.call-hud-heading > div {
-  min-width: 0;
-}
-
-.call-hud .eyebrow,
-.embedded-call-state .eyebrow {
-  margin-bottom: 4px;
-}
-
-.call-hud h1,
-.embedded-call-state h1 {
-  overflow: hidden;
-  margin: 0;
-  color: var(--cb-text);
-  font-size: 16px;
-  font-weight: 650;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.call-clock {
-  margin-left: 8px;
-  color: var(--cb-muted);
-  font-size: 12px;
-  font-variant-numeric: tabular-nums;
-}
-
-.end-call-button {
-  --background: var(--cb-coral);
-  --background-activated: #dc6653;
-  --color: #171a16;
-  width: 56px;
-  height: 56px;
-  flex: 0 0 56px;
-  margin: 0;
-}
-
-.end-call-button svg {
-  width: 24px;
-  height: 24px;
-  fill: currentColor;
-  transform: rotate(135deg);
-}
-
-.embedded-call-state {
-  position: absolute;
-  inset: auto 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  padding: 28px 24px calc(24px + env(safe-area-inset-bottom));
-  background: linear-gradient(0deg, #171a16, rgba(23, 26, 22, 0.84));
-}
-
 @media (max-width: 520px) {
   .call-screen:not(.call-active) {
     padding: 24px 22px calc(96px + env(safe-area-inset-bottom));
@@ -256,7 +164,4 @@
     width: 100%;
   }
 
-  .call-hud {
-    padding-inline: 18px;
-  }
 }

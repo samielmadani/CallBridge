@@ -1,16 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { FaceTimeService } from '../../services/facetime.service';
 
 @Component({
   selector: 'app-tabs',
   templateUrl: './tabs.page.html',
   styleUrls: ['./tabs.page.scss'],
 })
-export class TabsPage {
+export class TabsPage implements OnInit, OnDestroy {
+  isCallActive = false;
   private swipeStart: { x: number; y: number } | null = null;
   private readonly pages = ['/tabs/call', '/tabs/history', '/tabs/settings'];
+  private callSubscription = new Subscription();
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private faceTimeService: FaceTimeService
+  ) {}
+
+  ngOnInit() {
+    this.callSubscription.add(
+      this.faceTimeService.currentCall$.subscribe((call) => {
+        this.isCallActive = !!call;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.callSubscription.unsubscribe();
+  }
 
   recordSwipeStart(event: TouchEvent) {
     const touch = event.changedTouches[0];

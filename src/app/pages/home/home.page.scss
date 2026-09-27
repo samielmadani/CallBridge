@@ -91,15 +91,21 @@
 
 .home-link {
   width: 100%;
-  min-height: 60px;
+  min-height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 4px;
-  border: 0;
-  border-top: 1px solid rgba(243, 242, 231, 0.08);
-  background: transparent;
+  margin-top: 10px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: 18px;
+  background:
+    linear-gradient(var(--cb-glass), var(--cb-glass)) padding-box,
+    linear-gradient(135deg, rgba(255, 255, 255, 0.68), rgba(214, 239, 121, 0.38)) border-box;
   color: var(--cb-text);
+  box-shadow: var(--cb-glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--cb-glass-blur)) saturate(150%);
   font: inherit;
   font-size: 14px;
   font-weight: 650;

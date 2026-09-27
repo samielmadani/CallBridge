@@ -12,44 +12,19 @@
 <ion-content [fullscreen]="true">
   <main class="call-screen" [class.call-active]="!!currentCall">
     <ng-container *ngIf="currentCall; else idleCall">
-      <div *ngIf="callFrame; else embeddedCall" class="call-stage">
-        <iframe
-          class="call-frame"
-          [src]="callFrame"
-          [style.filter]="getCallFilterStyle()"
-          title="FaceTime call"
-          allow="camera; microphone; autoplay; fullscreen"
-          allowfullscreen
-        ></iframe>
-        <div class="call-hud">
-          <div class="call-hud-heading">
-            <span class="live-indicator"></span>
-            <div>
-              <p class="eyebrow">LIVE CALL</p>
-              <h1>{{ userName || 'FaceTime call' }}</h1>
-            </div>
-            <span class="call-clock">{{ getFormattedTime(callDuration) }}</span>
+      <section class="embedded-call-state" aria-live="polite">
+        <div class="call-hud-heading">
+          <span class="live-indicator"></span>
+          <div>
+            <p class="eyebrow">{{ isEmbeddedCallOpen ? 'LIVE CALL' : 'OPENING CALL' }}</p>
+            <h1>{{ userName || 'FaceTime call' }}</h1>
           </div>
-          <ion-button class="end-call-button" (click)="endCall()" aria-label="End call">
-            <svg slot="icon-only" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 15.1a2 2 0 0 1-.2-3.1 10.8 10.8 0 0 1 14.8 0 2 2 0 0 1-.2 3.1l-2 1.5a1.8 1.8 0 0 1-2.5-.3l-1.1-1.5a6 6 0 0 0-5.2 0l-1.1 1.5a1.8 1.8 0 0 1-2.5.3z" /></svg>
-          </ion-button>
+          <span class="call-clock">{{ getFormattedTime(callDuration) }}</span>
         </div>
-      </div>
-      <ng-template #embeddedCall>
-        <section class="embedded-call-state" aria-live="polite">
-          <div class="call-hud-heading">
-            <span class="live-indicator"></span>
-            <div>
-              <p class="eyebrow">{{ isEmbeddedCallOpen ? 'LIVE CALL' : 'CONNECTING' }}</p>
-              <h1>{{ userName || 'FaceTime call' }}</h1>
-            </div>
-            <span class="call-clock">{{ getFormattedTime(callDuration) }}</span>
-          </div>
-          <ion-button class="end-call-button" (click)="endCall()" aria-label="End call">
-            <svg slot="icon-only" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 15.1a2 2 0 0 1-.2-3.1 10.8 10.8 0 0 1 14.8 0 2 2 0 0 1-.2 3.1l-2 1.5a1.8 1.8 0 0 1-2.5-.3l-1.1-1.5a6 6 0 0 0-5.2 0l-1.1 1.5a1.8 1.8 0 0 1-2.5.3z" /></svg>
-          </ion-button>
-        </section>
-      </ng-template>
+        <ion-button class="end-call-button" (click)="endCall()" aria-label="End call">
+          <svg slot="icon-only" viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 15.1a2 2 0 0 1-.2-3.1 10.8 10.8 0 0 1 14.8 0 2 2 0 0 1-.2 3.1l-2 1.5a1.8 1.8 0 0 1-2.5-.3l-1.1-1.5a6 6 0 0 0-5.2 0l-1.1 1.5a1.8 1.8 0 0 1-2.5.3z" /></svg>
+        </ion-button>
+      </section>
     </ng-container>
 
     <ng-template #idleCall>
@@ -74,7 +49,7 @@
             <svg slot="end" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13m-5-5 5 5-5 5" /></svg>
           </ion-button>
         </div>
-        <p class="call-hint"><span></span> FaceTime links open inside CallBridge</p>
+        <p class="call-hint"><span></span> FaceTime calls open in their secure browser experience</p>
       </section>
     </ng-template>
   </main>
